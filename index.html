@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>lucsweb | Gewoon snel een website: simpel, veilig, goedkoop en compleet</title>
-    <meta name="description" content="lucsweb - Gewoon snel een website: simpel, veilig, goedkoop en compleet. Voor zzp'er of hobbyist.">
+    <meta name="description"
+        content="lucsweb - Gewoon snel een website: simpel, veilig, goedkoop en compleet. Voor zzp'er of hobbyist.">
 
     <!-- DotLottie Web Player -->
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
@@ -48,14 +49,8 @@
                     </div>
 
                     <div class="hero-lottie-wrap">
-                        <dotlottie-player
-                            id="hero-lottie-player"
-                            src="Walking Orange.lottie"
-                            background="transparent"
-                            speed="1"
-                            loop
-                            autoplay
-                            class="hero-lottie">
+                        <dotlottie-player id="hero-lottie-player" src="Walking Orange.lottie" background="transparent"
+                            speed="1" loop autoplay class="hero-lottie">
                         </dotlottie-player>
                     </div>
                 </div>
@@ -65,10 +60,9 @@
             <section class="dual-section" id="hoe-werkt-het">
                 <div class="dual-grid">
 
-                    <!-- Blok Links: Stappenplan -->
+                    <!-- Blok Links: Hoe werkt het? -->
                     <div class="dual-card">
                         <div class="dual-card-header">
-                            <span class="dual-badge">Stappenplan</span>
                             <h3>Hoe werkt het?</h3>
                         </div>
 
@@ -108,22 +102,30 @@
                         </ol>
                     </div>
 
-                    <!-- Blok Rechts: Eerdere websites -->
+                    <!-- Blok Rechts: Voorbeelden -->
                     <div class="dual-card">
                         <div class="dual-card-header">
-                            <span class="dual-badge">Eerdere websites</span>
                             <h3>Zie ook hoe wij anderen hielpen</h3>
                         </div>
 
                         <ul class="simple-website-links">
                             <li>
-                                <a href="#" target="_blank" rel="noopener">Engineering &amp; Technisch Portfolio &rarr;</a>
+                                <a href="https://beautyinstore.nl/" target="_blank" rel="noopener">beautyinstore.nl
+                                    &rarr;</a>
                             </li>
                             <li>
-                                <a href="#" target="_blank" rel="noopener">Online Visitekaartje Praktijk &rarr;</a>
+                                <a href="https://tandartschristian.nl/" target="_blank"
+                                    rel="noopener">tandartschristian.nl &rarr;</a>
                             </li>
                             <li>
-                                <a href="#" target="_blank" rel="noopener">Schilders- &amp; Onderhoudsbedrijf &rarr;</a>
+                                <a href="https://lucasle.nl/" target="_blank" rel="noopener">lucasle.nl &rarr;</a>
+                            </li>
+                            <li>
+                                <a href="https://diepline.nl/" target="_blank" rel="noopener">diepline.nl &rarr;</a>
+                            </li>
+                            <li>
+                                <a href="https://chaubrandstrategist.com/" target="_blank"
+                                    rel="noopener">chaubrandstrategist.com &rarr;</a>
                             </li>
                         </ul>
                     </div>
@@ -212,16 +214,19 @@
                         vervolgstappen.
                     </p>
 
-                    <form id="order-form" action="https://formspree.io/f/xppqejgy" method="POST" onsubmit="handleOrderSubmit(event)">
+                    <form id="order-form" action="https://formspree.io/f/xppqejgy" method="POST"
+                        onsubmit="handleOrderSubmit(event)">
                         <!-- 1. Pakket Selectie -->
                         <div class="form-group">
                             <label>Kies jouw pakket:</label>
                             <div class="pkg-toggle-wrap">
-                                <button type="button" class="pkg-toggle-btn" id="btn-toggle-flex" onclick="selectFormPlan('Flexibel pakket')">
+                                <button type="button" class="pkg-toggle-btn" id="btn-toggle-flex"
+                                    onclick="selectFormPlan('Flexibel pakket')">
                                     <span class="pkg-toggle-name">Flexibel pakket</span>
                                     <span class="pkg-toggle-price">&euro;19,99/mnd &bull; Maandelijks opzegbaar</span>
                                 </button>
-                                <button type="button" class="pkg-toggle-btn active" id="btn-toggle-consistent" onclick="selectFormPlan('Consistent pakket')">
+                                <button type="button" class="pkg-toggle-btn active" id="btn-toggle-consistent"
+                                    onclick="selectFormPlan('Consistent pakket')">
                                     <span class="pkg-toggle-name">Consistent pakket</span>
                                     <span class="pkg-toggle-price">&euro;14,99/mnd 1e jaar &bull; Voordeligste</span>
                                 </button>
@@ -232,17 +237,20 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="order-name">Naam *</label>
-                                <input type="text" id="order-name" name="naam" class="form-control" placeholder="Jouw naam" required>
+                                <input type="text" id="order-name" name="naam" class="form-control"
+                                    placeholder="Jouw naam" required>
                             </div>
                             <div class="form-group">
                                 <label for="order-phone">Telefoonnummer *</label>
-                                <input type="tel" id="order-phone" name="telefoon" class="form-control" placeholder="06 - 12 34 56 78" required>
+                                <input type="tel" id="order-phone" name="telefoon" class="form-control"
+                                    placeholder="06 - 12 34 56 78" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="order-email">E-mailadres *</label>
-                            <input type="email" id="order-email" name="email" class="form-control" placeholder="naam@voorbeeld.nl" required>
+                            <input type="email" id="order-email" name="email" class="form-control"
+                                placeholder="naam@voorbeeld.nl" required>
                         </div>
 
                         <!-- 3. Stijlvoorkeuren & Inspiratie -->
@@ -250,21 +258,25 @@
                             <label for="order-style">
                                 Stijlvoorkeuren &amp; inspiratie
                                 <span class="form-hint">
-                                    Idee&euml;n of websitelinks. Eventuele voorbeelden en bestanden (zoals PDF's) kunnen later worden overlegd.
+                                    Idee&euml;n of websitelinks. Eventuele voorbeelden en bestanden (zoals PDF's) kunnen
+                                    later worden overlegd.
                                 </span>
                             </label>
-                            <textarea id="order-style" name="stijl_en_inspiratie" class="form-control" rows="2" placeholder="Bijv. minimalistisch, links naar voorbeelden (kan ook later)..."></textarea>
+                            <textarea id="order-style" name="stijl_en_inspiratie" class="form-control" rows="2"
+                                placeholder="Bijv. minimalistisch, links naar voorbeelden (kan ook later)..."></textarea>
                         </div>
 
                         <!-- 4. Opmerkingen & Vragen -->
                         <div class="form-group">
                             <label for="order-notes">Opmerkingen en vragen</label>
-                            <textarea id="order-notes" name="opmerkingen_vragen" class="form-control" rows="3" placeholder="Eventuele overige wensen of vragen..."></textarea>
+                            <textarea id="order-notes" name="opmerkingen_vragen" class="form-control" rows="3"
+                                placeholder="Eventuele overige wensen of vragen..."></textarea>
                         </div>
 
                         <!-- Foutmelding -->
                         <div id="order-error" class="file-error-msg">
-                            Er ging iets mis bij het versturen. Probeer het opnieuw of stuur een mail naar <a href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a>.
+                            Er ging iets mis bij het versturen. Probeer het opnieuw of stuur een mail naar <a
+                                href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a>.
                         </div>
 
                         <!-- 5. Verzenden -->
@@ -272,14 +284,16 @@
                             Versturen &rarr;
                         </button>
                         <p class="privacy-note">
-                            Je gegevens worden uitsluitend gebruikt om contact met je op te nemen over je aanvraag en worden nooit gedeeld met derden.
+                            Je gegevens worden uitsluitend gebruikt om contact met je op te nemen over je aanvraag en
+                            worden nooit gedeeld met derden.
                         </p>
                     </form>
 
                     <!-- Bevestiging na verzenden -->
                     <div class="form-success" id="order-success">
                         <h3>Bedankt voor je aanvraag!</h3>
-                        <p>We hebben je aanvraag en gegevens succesvol ontvangen. We nemen zo snel mogelijk (binnen 3 werkdagen) contact met je op voor de vervolgstappen.</p>
+                        <p>We hebben je aanvraag en gegevens succesvol ontvangen. We nemen zo snel mogelijk (binnen 3
+                            werkdagen) contact met je op voor de vervolgstappen.</p>
                     </div>
                 </div>
             </section>
@@ -289,7 +303,9 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 lucsweb &bull; <a href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a> &bull; <a href="#privacy" onclick="openPrivacyModal(event)">Privacyverklaring</a> &bull; Simpel, veilig, goedkoop en compleet voor zzp'er en hobbyist.</p>
+            <p>&copy; 2026 lucsweb &bull; <a href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a> &bull; <a
+                    href="#privacy" onclick="openPrivacyModal(event)">Privacyverklaring</a> &bull; Simpel, veilig,
+                goedkoop en compleet voor zzp'er en hobbyist.</p>
         </div>
     </footer>
 
@@ -298,25 +314,34 @@
         <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div class="modal-header">
                 <h3 id="modal-title">Privacyverklaring lucsweb</h3>
-                <button type="button" class="modal-close" onclick="closePrivacyModal()" aria-label="Sluiten">&times;</button>
+                <button type="button" class="modal-close" onclick="closePrivacyModal()"
+                    aria-label="Sluiten">&times;</button>
             </div>
             <div class="modal-body">
-                <p>lucsweb hecht veel waarde aan de bescherming van jouw privacy. In deze beknopte verklaring leggen we helder uit hoe we omgaan met persoonsgegevens.</p>
+                <p>lucsweb hecht veel waarde aan de bescherming van jouw privacy. In deze beknopte verklaring leggen we
+                    helder uit hoe we omgaan met persoonsgegevens.</p>
 
                 <h4>1. Welke gegevens verzamelen wij?</h4>
-                <p>Wij verzamelen uitsluitend de gegevens die je zelf vrijwillig invult in ons aanvraagformulier: jouw naam, e-mailadres, telefoonnummer en eventuele opmerkingen of wensen.</p>
+                <p>Wij verzamelen uitsluitend de gegevens die je zelf vrijwillig invult in ons aanvraagformulier: jouw
+                    naam, e-mailadres, telefoonnummer en eventuele opmerkingen of wensen.</p>
 
                 <h4>2. Doel van de verwerking</h4>
-                <p>Jouw persoonsgegevens worden uitsluitend gebruikt om binnen 3 werkdagen persoonlijk contact met je op te nemen over jouw website-aanvraag en eventuele vervolgstappen.</p>
+                <p>Jouw persoonsgegevens worden uitsluitend gebruikt om binnen 3 werkdagen persoonlijk contact met je op
+                    te nemen over jouw website-aanvraag en eventuele vervolgstappen.</p>
 
                 <h4>3. Geen cookies of tracking</h4>
-                <p>lucsweb gebruikt géén trackingcookies, marketingcookies of volgsystemen van derden. De website is 100% cookie-vrij en snel.</p>
+                <p>lucsweb gebruikt géén trackingcookies, marketingcookies of volgsystemen van derden. De website is
+                    100% cookie-vrij en snel.</p>
 
                 <h4>4. Gegevensdeling &amp; beveiliging</h4>
-                <p>Wij verkopen of verstrekken jouw gegevens nooit aan derden. Formulier-inzendingen worden versleuteld verzonden via onze betrouwbare formulierverwerker (Formspree) en veilig afgeleverd in onze mailbox.</p>
+                <p>Wij verkopen of verstrekken jouw gegevens nooit aan derden. Formulier-inzendingen worden versleuteld
+                    verzonden via onze betrouwbare formulierverwerker (Formspree) en veilig afgeleverd in onze mailbox.
+                </p>
 
                 <h4>5. Bewaartermijn &amp; jouw rechten</h4>
-                <p>Gegevens worden niet langer bewaard dan nodig is voor de communicatie over jouw aanvraag. Je hebt altijd het recht om je gegevens in te zien, te wijzigen of te laten wissen via <a href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a>.</p>
+                <p>Gegevens worden niet langer bewaard dan nodig is voor de communicatie over jouw aanvraag. Je hebt
+                    altijd het recht om je gegevens in te zien, te wijzigen of te laten wissen via <a
+                        href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-modal-close" onclick="closePrivacyModal()">Sluiten</button>
