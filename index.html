@@ -4,1409 +4,1199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lucsweb | Gewoon snel een website: simpel, veilig, goedkoop en compleet</title>
-    <meta name="description"
-        content="lucsweb - Gewoon snel een website: simpel, veilig, goedkoop en compleet. Voor zzp'er of hobbyist.">
+    <title>Webdesign voor ZZP'ers</title>
+    <link rel="icon" type="image/png" href="LUCSWEB_white.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js Basis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    <!-- DotLottie Web Player -->
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
-
-    <!-- Ingebouwde Stylesheet (werkt altijd direct op GitHub en lokaal) -->
     <style>
-:root {
-    --primary: #1b365d;
-    --primary-hover: #12243e;
-    --primary-light: #f1f5fa;
-    --primary-border: #d4e0ee;
-    --dark: #1c1917;
-    --muted: #57534e;
-    --border: #e7e5e4;
-    --bg: #fafaf9;
-    --card-bg: #ffffff;
-    --radius: 4px;
-    --shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: var(--bg);
-    color: var(--dark);
-    line-height: 1.6;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-h1,
-h2,
-h3,
-.logo,
-.plan-title,
-.plan-price-val {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-/* Container */
-.container {
-    width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
-/* Header */
-header {
-    padding: 16px 0;
-    background: #ff8200;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 2px 12px rgba(255, 130, 0, 0.2);
-}
-
-.header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.logo {
-    font-weight: 800;
-    font-size: 1.3rem;
-    color: #111827;
-    text-decoration: none;
-    letter-spacing: -0.01em;
-}
-
-.logo span.logo-accent {
-    color: #ffffff;
-}
-
-.header-nav {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.header-nav a {
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-decoration: none;
-    color: #111827;
-    transition: all 0.15s ease;
-}
-
-.header-nav a:hover {
-    color: #ffffff;
-}
-
-.header-nav a.highlight-link {
-    color: #ffffff;
-    font-weight: 600;
-    background: #1b365d;
-    padding: 7px 16px;
-    border-radius: var(--radius);
-    border: 1px solid #1b365d;
-    transition: all 0.15s ease;
-}
-
-.header-nav a.highlight-link:hover {
-    background: #111827;
-    border-color: #111827;
-    color: #ffffff;
-}
-
-/* Main Content */
-main {
-    flex: 1;
-    padding: 56px 0 76px;
-}
-
-/* Hero */
-.hero {
-    position: relative;
-    margin: 16px 0 52px;
-    min-height: 260px;
-    display: flex;
-    align-items: center;
-}
-
-.hero-layout {
-    position: relative;
-    width: 100%;
-}
-
-.hero-text {
-    position: relative;
-    z-index: 2;
-    max-width: 680px;
-    text-align: left;
-}
-
-.hero-lottie-wrap {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.9;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-.hero-lottie {
-    width: 220px;
-    height: 220px;
-    max-width: 100%;
-}
-
-h1 {
-    font-size: clamp(2rem, 4.2vw, 3.1rem);
-    font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: -0.015em;
-    margin-bottom: 20px;
-    color: var(--dark);
-    text-align: left;
-}
-
-h1 span.highlight {
-    color: var(--primary);
-    display: block;
-    margin-top: 4px;
-}
-
-.hero-subtitle {
-    font-size: clamp(1.05rem, 1.8vw, 1.22rem);
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 680px;
-    margin: 0;
-    text-align: left;
-}
-
-.hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 26px;
-    flex-wrap: wrap;
-}
-
-.hero-btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--primary);
-    color: #ffffff;
-    padding: 12px 22px;
-    border-radius: var(--radius);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border: 1px solid var(--primary);
-    transition: background-color 0.15s ease, transform 0.15s ease;
-}
-
-.hero-btn-primary:hover {
-    background: var(--primary-hover);
-    border-color: var(--primary-hover);
-    transform: translateY(-1px);
-}
-
-.hero-btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #ffffff;
-    color: var(--dark);
-    padding: 12px 20px;
-    border-radius: var(--radius);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border: 1px solid var(--border);
-    transition: all 0.15s ease;
-}
-
-.hero-btn-secondary:hover {
-    border-color: #cbd5e1;
-    background: #f8fafc;
-    transform: translateY(-1px);
-}
-
-/* Hoe werkt het & Eerdere websites (2 Blokken) */
-.dual-section {
-    margin: 24px 0 64px;
-}
-
-.dual-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 26px;
-    align-items: stretch;
-}
-
-.dual-card {
-    background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 34px 28px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.dual-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.dual-card-header {
-    margin-bottom: 22px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-}
-
-.dual-badge {
-    display: none !important;
-}
-
-.dual-card-header h3 {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 0;
-    line-height: 1.3;
-}
-
-/* Stappenlijst links */
-.steps-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    flex: 1;
-}
-
-.step-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-}
-
-.step-badge {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 0.88rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-.step-text {
-    font-size: 0.92rem;
-    color: var(--muted);
-    line-height: 1.55;
-}
-
-.step-text strong {
-    color: var(--dark);
-    font-weight: 700;
-    display: block;
-    margin-bottom: 3px;
-    font-size: 0.95rem;
-}
-
-/* Eenvoudige links rechts */
-.simple-website-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 0;
-    margin: 6px 0 0;
-}
-
-.simple-website-links li {
-    display: flex;
-    align-items: center;
-}
-
-.simple-website-links a {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--primary);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    transition: color 0.15s ease, transform 0.15s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.simple-website-links a:hover {
-    color: #ff8200;
-    transform: translateX(4px);
-}
-
-/* Pricing Section (2 Plans - Full Width Rand tot rand) */
-.pricing-section {
-    width: 100%;
-    position: relative;
-    background: #0b1320 url('background.jpg') center center / cover no-repeat;
-    padding: 72px 0 80px;
-    margin: 16px 0 64px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 2px 20px rgba(0, 0, 0, 0.35);
-    overflow: hidden;
-}
-
-.pricing-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(11, 19, 32, 0.72) 0%, rgba(15, 25, 42, 0.82) 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.pricing-section>* {
-    position: relative;
-    z-index: 2;
-}
-
-.pricing-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.pricing-header h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 6px;
-}
-
-.pricing-header p {
-    color: #cbd5e1;
-    font-size: 0.96rem;
-}
-
-.plans-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-}
-
-.plan-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 34px 28px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.22s ease;
-    will-change: transform, box-shadow;
-    z-index: 2;
-}
-
-.plan-card:hover {
-    transform: scale(1.06) translateY(-10px);
-    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.42), 0 0 0 2px var(--primary);
-    z-index: 10;
-}
-
-.plan-card.featured {
-    border: 2px solid var(--primary);
-}
-
-.plan-card.featured:hover {
-    transform: scale(1.06) translateY(-10px);
-    border-color: #ff8200;
-    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.45), 0 0 0 2px #ff8200;
-    z-index: 10;
-}
-
-.plan-badge {
-    display: inline-block;
-    font-size: 0.76rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--primary);
-    margin-bottom: 10px;
-}
-
-.plan-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--dark);
-    margin-bottom: 6px;
-}
-
-.plan-desc {
-    font-size: 0.92rem;
-    color: var(--muted);
-    margin-bottom: 20px;
-    min-height: 44px;
-    line-height: 1.5;
-}
-
-.plan-price-wrap {
-    margin-bottom: 20px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--border);
-}
-
-.plan-price-main {
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-    margin-bottom: 4px;
-}
-
-.plan-currency {
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: var(--dark);
-}
-
-.plan-price-val {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--dark);
-    line-height: 1;
-    letter-spacing: -0.02em;
-}
-
-.plan-period {
-    font-size: 0.92rem;
-    color: var(--muted);
-    font-weight: 500;
-}
-
-.plan-setup-fee {
-    font-size: 0.88rem;
-    color: var(--dark);
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.plan-terms-badge {
-    display: inline-block;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--primary);
-    background: var(--primary-light);
-    padding: 4px 10px;
-    border-radius: var(--radius);
-    border: 1px solid var(--primary-border);
-}
-
-.plan-features {
-    list-style: none;
-    margin-bottom: 0;
-    flex: 1;
-}
-
-.plan-features li {
-    font-size: 0.92rem;
-    color: var(--dark);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    line-height: 1.5;
-}
-
-.plan-features li span.bullet {
-    color: var(--primary);
-    font-weight: 700;
-    line-height: 1;
-}
-
-.static-notice-box {
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-left: 3px solid var(--primary);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    font-size: 0.92rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-top: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.static-notice-box strong {
-    color: var(--dark);
-}
-
-/* Form Section */
-.form-section {
-    margin-top: 10px;
-    margin-bottom: 30px;
-}
-
-.form-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 38px 34px;
-    box-shadow: var(--shadow);
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-.form-card h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--dark);
-    margin-bottom: 8px;
-    text-align: center;
-}
-
-.form-notice {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 28px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.88rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--dark);
-}
-
-.form-hint {
-    font-weight: 400;
-    color: var(--muted);
-    display: block;
-    font-size: 0.82rem;
-    margin-top: 2px;
-}
-
-.pkg-toggle-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.pkg-toggle-btn {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 13px 16px;
-    text-align: left;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.pkg-toggle-btn:hover {
-    border-color: #d6d3d1;
-}
-
-.pkg-toggle-btn.active {
-    background: var(--primary-light);
-    border-color: var(--primary);
-}
-
-.pkg-toggle-name {
-    font-weight: 700;
-    font-size: 0.96rem;
-    color: var(--dark);
-}
-
-.pkg-toggle-btn.active .pkg-toggle-name {
-    color: var(--primary);
-}
-
-.pkg-toggle-price {
-    font-size: 0.82rem;
-    color: var(--muted);
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-}
-
-.form-control {
-    width: 100%;
-    padding: 11px 14px;
-    border-radius: var(--radius);
-    border: 1px solid #d6d3d1;
-    font-family: inherit;
-    font-size: 0.95rem;
-    color: var(--dark);
-    background: #fafaf9;
-    transition: all 0.15s ease;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.12);
-}
-
-.file-upload-wrap {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.btn-file-select {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 18px;
-    border-radius: var(--radius);
-    border: 1px solid #d6d3d1;
-    background: #ffffff;
-    color: var(--dark);
-    font-weight: 600;
-    font-size: 0.88rem;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.btn-file-select:hover {
-    background: #f5f5f4;
-    border-color: #a8a29e;
-}
-
-.file-selected-name {
-    font-size: 0.88rem;
-    color: var(--muted);
-    word-break: break-all;
-}
-
-.file-selected-name.active {
-    color: var(--primary);
-    font-weight: 600;
-}
-
-.file-error-msg {
-    display: none;
-    margin-top: 6px;
-    margin-bottom: 14px;
-    font-size: 0.85rem;
-    color: var(--primary);
-    font-weight: 600;
-    text-align: center;
-}
-
-.file-error-msg a {
-    color: inherit;
-    text-decoration: underline;
-}
-
-.btn-submit {
-    width: 100%;
-    padding: 14px 24px;
-    font-size: 1rem;
-    margin-top: 6px;
-    background-color: var(--primary);
-    color: #ffffff;
-    border: 1px solid var(--primary);
-    border-radius: var(--radius);
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-    font-family: inherit;
-}
-
-.btn-submit:hover {
-    background-color: var(--primary-hover);
-    border-color: var(--primary-hover);
-}
-
-.form-success {
-    display: none;
-    background: var(--primary-light);
-    border: 1px solid var(--primary-border);
-    border-radius: var(--radius);
-    padding: 24px;
-    text-align: center;
-    color: var(--dark);
-}
-
-.form-success h3 {
-    font-size: 1.25rem;
-    color: var(--primary);
-    margin-bottom: 8px;
-}
-
-.form-success p {
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.6;
-}
-
-/* Footer */
-footer {
-    border-top: 1px solid var(--border);
-    background: #ffffff;
-    padding: 24px 0;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.88rem;
-}
-
-footer a {
-    color: inherit;
-    text-decoration: underline;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero {
-        min-height: auto;
-    }
-
-    .hero-lottie-wrap {
-        display: none !important;
-    }
-
-    .dual-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .dual-card {
-        padding: 26px 20px;
-    }
-}
-
-@media (max-width: 680px) {
-    .pricing-section {
-        padding: 48px 0 54px;
-    }
-
-    .plan-card:hover,
-    .plan-card.featured:hover {
-        transform: scale(1.02) translateY(-4px);
-    }
-
-    .plans-grid,
-    .pkg-toggle-wrap,
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    .form-card {
-        padding: 26px 18px;
-    }
-}
-
-/* Privacy Note & Modal */
-.privacy-note {
-    font-size: 0.8rem;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 10px;
-    line-height: 1.45;
-}
-
-.modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(12, 19, 31, 0.65);
-    backdrop-filter: blur(3px);
-    z-index: 999;
-    padding: 20px;
-    overflow-y: auto;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-backdrop.open {
-    display: flex;
-}
-
-.modal-dialog {
-    background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    width: 100%;
-    max-width: 580px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh;
-    animation: modalFadeIn 0.15s ease-out;
-}
-
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.modal-header {
-    padding: 18px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.modal-header h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 0;
-}
-
-.modal-close {
-    background: transparent;
-    border: none;
-    font-size: 1.6rem;
-    line-height: 1;
-    color: var(--muted);
-    cursor: pointer;
-    padding: 0 4px;
-    transition: color 0.15s ease;
-}
-
-.modal-close:hover {
-    color: var(--dark);
-}
-
-.modal-body {
-    padding: 24px;
-    overflow-y: auto;
-    font-size: 0.92rem;
-    color: var(--dark);
-    line-height: 1.6;
-}
-
-.modal-body a {
-    color: var(--primary);
-    text-decoration: underline;
-}
-
-.modal-body h4 {
-    font-size: 0.96rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 16px 0 4px;
-}
-
-.modal-body p {
-    color: var(--muted);
-    margin-bottom: 10px;
-}
-
-.modal-footer {
-    padding: 14px 24px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: flex-end;
-    background: #fafaf9;
-}
-
-.btn-modal-close {
-    padding: 8px 18px;
-    background: var(--primary);
-    color: #ffffff;
-    border: 1px solid var(--primary);
-    border-radius: var(--radius);
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background-color 0.15s ease;
-}
-
-.btn-modal-close:hover {
-    background-color: var(--primary-hover);
-}
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .apple-glass {
+            position: relative;
+            background: rgba(13, 18, 30, 0.72);
+            backdrop-filter: blur(28px) saturate(180%) contrast(105%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%) contrast(105%);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 1.5rem;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.45),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 8px 20px rgba(255, 255, 255, 0.08),
+                inset 0 -8px 20px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        @media (max-width: 767px) {
+            .apple-glass {
+                border-radius: 1.25rem;
+                box-shadow:
+                    0 10px 30px rgba(0, 0, 0, 0.35),
+                    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+                    inset 0 4px 12px rgba(255, 255, 255, 0.12);
+            }
+        }
+
+        .apple-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .apple-glass>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .apple-glass-input {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
+            color: #ffffff;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            touch-action: auto;
+        }
+
+        .apple-glass-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .apple-glass-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            border-color: #1da1f2;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(29, 161, 242, 0.3);
+        }
+
+        .scroll-container {
+            height: 350vh;
+            position: relative;
+        }
+
+        @media (max-width: 767px) {
+            .scroll-container {
+                height: 420vh;
+            }
+        }
+
+        .viewport-3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        #webgl-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .content-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .stage-item {
+            position: absolute;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            will-change: transform, opacity;
+            width: 90%;
+            max-width: 400px;
+            pointer-events: auto;
+            touch-action: pan-y;
+        }
+
+        @media (max-width: 767px) {
+            .stage-item {
+                width: calc(100% - 32px);
+                max-width: 380px;
+            }
+        }
+
+        .stage-contact-form {
+            max-width: 490px;
+        }
+
+        @media (max-width: 767px) {
+            .stage-contact-form {
+                max-width: 390px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0c85d0;
+            border-radius: 4px;
+        }
+
+        /* Fixed glass header top-right */
+        .fixed-header-bar {
+            position: fixed;
+            top: 1rem;
+            right: 1.25rem;
+            z-index: 60;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .fixed-header-bar .apple-glass {
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+            height: 42px;
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fixed-header-bar .apple-glass:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+            border-color: rgba(29, 161, 242, 0.45);
+        }
+
+        .header-logo-btn {
+            padding: 0 1.25rem;
+        }
+
+        .header-logo-btn img {
+            height: 22px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(29, 161, 242, 0.45));
+            transition: filter 0.3s ease;
+        }
+
+        .header-logo-btn:hover img {
+            filter: drop-shadow(0 0 14px rgba(29, 161, 242, 0.7));
+        }
+
+        .header-pill-btn {
+            padding: 0 1.15rem;
+            gap: 0.45rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        @media (max-width: 767px) {
+            .fixed-header-bar {
+                top: 0.75rem;
+                right: 0.75rem;
+                gap: 0.4rem;
+            }
+
+            .fixed-header-bar .apple-glass {
+                height: 36px;
+            }
+
+            .header-logo-btn {
+                padding: 0 0.95rem;
+            }
+
+            .header-logo-btn img {
+                height: 18px;
+            }
+
+            .header-pill-btn {
+                padding: 0 0.8rem;
+                font-size: 0.75rem;
+                gap: 0.35rem;
+            }
+        }
+
+        /* Modal styling */
+        .modal-glass-card {
+            background: rgba(15, 20, 32, 0.92);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-scroll-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .modal-scroll-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-scroll-content::-webkit-scrollbar-thumb {
+            background: rgba(29, 161, 242, 0.45);
+            border-radius: 4px;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="container header-inner">
-            <a href="#" class="logo">lucs<span class="logo-accent">web</span></a>
-            <nav class="header-nav">
-                <a href="#hoe-werkt-het">Hoe werkt het?</a>
-                <a href="#tarieven">Tarieven</a>
-                <a href="#aanvragen" class="highlight-link">Aanvragen &rarr;</a>
-            </nav>
-        </div>
+    <!-- Fixed Glass Header Top Right -->
+    <header class="fixed-header-bar">
+        <button type="button" class="apple-glass header-pill-btn" onclick="openPrivacyModal()"
+            title="Bekijk de privacyverklaring">
+            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <span class="inline sm:hidden">Privacy</span>
+            <span class="hidden sm:inline">Privacyverklaring</span>
+        </button>
+
+        <a href="#" class="apple-glass header-logo-btn"
+            onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" title="LUCSWEB - Naar boven">
+            <img src="LUCSWEB_white.png" alt="LUCSWEB logo" />
+        </a>
     </header>
 
-    <!-- Hoofdinhoud -->
-    <main>
-        <div class="container">
+    <!-- Privacy Modal (Glass Block Popup) -->
+    <div id="privacy-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none"
+        style="background: rgba(11, 15, 25, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
+        onclick="if(event.target === this) closePrivacyModal();">
+        <div class="apple-glass modal-glass-card max-w-xl w-full max-h-[85vh] flex flex-col p-5 sm:p-7 shadow-2xl relative transform scale-95 transition-all duration-300"
+            id="privacy-modal-card">
 
-            <!-- Hero Sectie -->
-            <section class="hero">
-                <div class="hero-layout">
-                    <div class="hero-text">
-                        <h1>
-                            Gewoon snel een website:
-                            <span class="highlight">simpel, veilig, goedkoop en compleet.</span>
-                        </h1>
-                        <p class="hero-subtitle">
-                            Binnen 3 werkdagen een snelle, professionele statische website als online visitekaartje of
-                            portfolio. Zonder gedoe, webshops of inlogsystemen, gewoon simpel, veilig en
-                            compleet.
-                        </p>
+            <!-- Header -->
+            <div class="flex items-center justify-between pb-3.5 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
                     </div>
-
-                    <div class="hero-lottie-wrap">
-                        <dotlottie-player id="hero-lottie-player" src="Walking Orange.lottie" background="transparent"
-                            speed="1" loop autoplay class="hero-lottie">
-                        </dotlottie-player>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-white">Privacyverklaring</h2>
+                        <p class="text-[11px] text-sky-300/80">LUCSWEB • Veilig & Transparant</p>
                     </div>
                 </div>
-            </section>
-
-            <!-- Sectie: Hoe werkt het & Eerdere websites -->
-            <section class="dual-section" id="hoe-werkt-het">
-                <div class="dual-grid">
-
-                    <!-- Blok Links: Hoe werkt het? -->
-                    <div class="dual-card">
-                        <div class="dual-card-header">
-                            <h3>Hoe werkt het?</h3>
-                        </div>
-
-                        <ol class="steps-list">
-                            <li class="step-item">
-                                <span class="step-badge">1</span>
-                                <div class="step-text">
-                                    <strong>Stijl &amp; thema bedenken</strong>
-                                    Bedenk van tevoren wat voor stijl of thema je voor je website wilt. Weet je dat nog
-                                    niet precies? Geen probleem, dat kunnen we samen bespreken.
-                                </div>
-                            </li>
-                            <li class="step-item">
-                                <span class="step-badge">2</span>
-                                <div class="step-text">
-                                    <strong>Plan kiezen &amp; formulier invullen</strong>
-                                    Bestudeer de 2 plannen en vul het formulier in. Hier komen geen kosten bij kijken;
-                                    je betaalt nu nog helemaal niks.
-                                </div>
-                            </li>
-                            <li class="step-item">
-                                <span class="step-badge">3</span>
-                                <div class="step-text">
-                                    <strong>Contact &amp; afstemming</strong>
-                                    Wij nemen contact met je op en bespreken verder het gekozen plan, de betalingen en
-                                    de bouw van je website.
-                                </div>
-                            </li>
-                            <li class="step-item">
-                                <span class="step-badge">4</span>
-                                <div class="step-text">
-                                    <strong>Bouw &amp; duidelijke status</strong>
-                                    We houden je goed op de hoogte van de status van je website en we volgen het plan
-                                    dat jij hebt gekozen.
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
-
-                    <!-- Blok Rechts: Voorbeelden -->
-                    <div class="dual-card">
-                        <div class="dual-card-header">
-                            <h3>Zie ook hoe wij anderen hielpen</h3>
-                        </div>
-
-                        <ul class="simple-website-links">
-                            <li>
-                                <a href="https://beautyinstore.nl/" target="_blank" rel="noopener">beautyinstore.nl &rarr;</a>
-                            </li>
-                            <li>
-                                <a href="https://tandartschristian.nl/" target="_blank" rel="noopener">tandartschristian.nl &rarr;</a>
-                            </li>
-                            <li>
-                                <a href="https://lucasle.nl/" target="_blank" rel="noopener">lucasle.nl &rarr;</a>
-                            </li>
-                            <li>
-                                <a href="https://diepline.nl/" target="_blank" rel="noopener">diepline.nl &rarr;</a>
-                            </li>
-                            <li>
-                                <a href="https://chaubrandstrategist.com/" target="_blank" rel="noopener">chaubrandstrategist.com &rarr;</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-            </section>
-        </div>
-
-        <!-- Sectie: Tarieven (Rand tot rand) -->
-        <section class="pricing-section" id="tarieven">
-            <div class="container">
-                <div class="pricing-header">
-                    <h2>Kies jouw plan</h2>
-                    <p>Twee heldere keuzes, zonder verborgen kosten.</p>
-                </div>
-
-                <div class="plans-grid">
-                    <!-- Plan 1: Flexibel Pakket -->
-                    <div class="plan-card"
-                        onclick="selectFormPlan('Flexibel pakket'); document.getElementById('aanvragen').scrollIntoView({ behavior: 'smooth' })"
-                        title="Klik om Flexibel pakket te kiezen">
-                        <span class="plan-badge">Vrijheid &amp; Gemak</span>
-                        <div class="plan-title">Flexibel pakket</div>
-                        <div class="plan-desc">Maximale flexibiliteit, nergens aan vast.</div>
-
-                        <div class="plan-price-wrap">
-                            <div class="plan-price-main">
-                                <span class="plan-currency">&euro;</span>
-                                <span class="plan-price-val">19,99</span>
-                                <span class="plan-period">/ maand</span>
-                            </div>
-                            <div class="plan-setup-fee">+ &euro;99,99 startkosten</div>
-                            <span class="plan-terms-badge">Maandelijks opzegbaar</span>
-                        </div>
-
-                        <ul class="plan-features">
-                            <li><span class="bullet">&bull;</span> Statische website (visitekaartje / portfolio)</li>
-                            <li><span class="bullet">&bull;</span> Binnen 3 werkdagen online</li>
-                            <li><span class="bullet">&bull;</span> Inclusief hosting &amp; SSL-beveiliging</li>
-                            <li><span class="bullet">&bull;</span> Iedere maand eenvoudig opzegbaar</li>
-                        </ul>
-                    </div>
-
-                    <!-- Plan 2: Consistent Pakket -->
-                    <div class="plan-card featured"
-                        onclick="selectFormPlan('Consistent pakket'); document.getElementById('aanvragen').scrollIntoView({ behavior: 'smooth' })"
-                        title="Klik om Consistent pakket te kiezen">
-                        <span class="plan-badge">Meest Gekozen</span>
-                        <div class="plan-title">Consistent pakket</div>
-                        <div class="plan-desc">Het voordeligste tarief voor het eerste jaar.</div>
-
-                        <div class="plan-price-wrap">
-                            <div class="plan-price-main">
-                                <span class="plan-currency">&euro;</span>
-                                <span class="plan-price-val">14,99</span>
-                                <span class="plan-period">/ maand (1e jaar)</span>
-                            </div>
-                            <div class="plan-setup-fee">+ &euro;99,99 startkosten</div>
-                            <span class="plan-terms-badge">Na 1 jaar: &euro;20,-/mnd (maandelijks opzegbaar)</span>
-                        </div>
-
-                        <ul class="plan-features">
-                            <li><span class="bullet">&bull;</span> Statische website (visitekaartje / portfolio)</li>
-                            <li><span class="bullet">&bull;</span> Binnen 3 werkdagen online</li>
-                            <li><span class="bullet">&bull;</span> Inclusief hosting &amp; SSL-beveiliging</li>
-                            <li><span class="bullet">&bull;</span> Scherpste maandtarief (1e jaar vast)</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Duidelijkheid over Statische Website -->
-                <div class="static-notice-box">
-                    <strong>Let op:</strong> Uitsluitend statische websites (visitekaartje of portfolio), geen
-                    webshops of inlogsystemen.
-                </div>
+                <button type="button" onclick="closePrivacyModal()"
+                    class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer"
+                    title="Sluiten">
+                    ✕
+                </button>
             </div>
-        </section>
 
-        <div class="container">
-            <!-- Sectie: Aanvraagformulier -->
-            <section class="form-section" id="aanvragen">
-                <div class="form-card">
-                    <h2>Direct aanvragen</h2>
-                    <p class="form-notice">
-                        Kies je pakket en vul je gegevens in. We nemen binnen 3 werkdagen contact met je op voor de
-                        vervolgstappen.
+            <!-- Body: Scrollable Privacy Content -->
+            <div
+                class="overflow-y-auto pr-2 my-4 space-y-4 text-xs sm:text-sm text-gray-200 modal-scroll-content leading-relaxed">
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-1">1. Wie zijn wij?</h3>
+                    <p class="text-gray-300 text-xs sm:text-[13px]">
+                        LUCSWEB is een webdevelopment dienst voor zzp'ers en kleine ondernemingen. Wij respecteren jouw
+                        privacy en dragen zorg voor de vertrouwelijke behandeling van alle persoonsgegevens die je met
+                        ons deelt.
                     </p>
-
-                    <form id="order-form" action="https://formspree.io/f/xppqejgy" method="POST"
-                        onsubmit="handleOrderSubmit(event)">
-                        <!-- 1. Pakket Selectie -->
-                        <div class="form-group">
-                            <label>Kies jouw pakket:</label>
-                            <div class="pkg-toggle-wrap">
-                                <button type="button" class="pkg-toggle-btn" id="btn-toggle-flex"
-                                    onclick="selectFormPlan('Flexibel pakket')">
-                                    <span class="pkg-toggle-name">Flexibel pakket</span>
-                                    <span class="pkg-toggle-price">&euro;19,99/mnd &bull; Maandelijks opzegbaar</span>
-                                </button>
-                                <button type="button" class="pkg-toggle-btn active" id="btn-toggle-consistent"
-                                    onclick="selectFormPlan('Consistent pakket')">
-                                    <span class="pkg-toggle-name">Consistent pakket</span>
-                                    <span class="pkg-toggle-price">&euro;14,99/mnd 1e jaar &bull; Voordeligste</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- 2. Persoonlijke Gegevens -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="order-name">Naam *</label>
-                                <input type="text" id="order-name" name="naam" class="form-control"
-                                    placeholder="Jouw naam" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="order-phone">Telefoonnummer *</label>
-                                <input type="tel" id="order-phone" name="telefoon" class="form-control"
-                                    placeholder="06 - 12 34 56 78" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="order-email">E-mailadres *</label>
-                            <input type="email" id="order-email" name="email" class="form-control"
-                                placeholder="naam@voorbeeld.nl" required>
-                        </div>
-
-                        <!-- 3. Stijlvoorkeuren & Inspiratie -->
-                        <div class="form-group">
-                            <label for="order-style">
-                                Stijlvoorkeuren &amp; inspiratie
-                                <span class="form-hint">
-                                    Idee&euml;n of websitelinks. Eventuele voorbeelden en bestanden (zoals PDF's) kunnen
-                                    later worden overlegd.
-                                </span>
-                            </label>
-                            <textarea id="order-style" name="stijl_en_inspiratie" class="form-control" rows="2"
-                                placeholder="Bijv. minimalistisch, links naar voorbeelden (kan ook later)..."></textarea>
-                        </div>
-
-                        <!-- 4. Opmerkingen & Vragen -->
-                        <div class="form-group">
-                            <label for="order-notes">Opmerkingen en vragen</label>
-                            <textarea id="order-notes" name="opmerkingen_vragen" class="form-control" rows="3"
-                                placeholder="Eventuele overige wensen of vragen..."></textarea>
-                        </div>
-
-                        <!-- Foutmelding -->
-                        <div id="order-error" class="file-error-msg">
-                            Er ging iets mis bij het versturen. Probeer het opnieuw of stuur een mail naar <a
-                                href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a>.
-                        </div>
-
-                        <!-- 5. Verzenden -->
-                        <button type="submit" id="order-submit-btn" class="btn-submit">
-                            Versturen &rarr;
-                        </button>
-                        <p class="privacy-note">
-                            Je gegevens worden uitsluitend gebruikt om contact met je op te nemen over je aanvraag en
-                            worden nooit gedeeld met derden.
-                        </p>
-                    </form>
-
-                    <!-- Bevestiging na verzenden -->
-                    <div class="form-success" id="order-success">
-                        <h3>Bedankt voor je aanvraag!</h3>
-                        <p>We hebben je aanvraag en gegevens succesvol ontvangen. We nemen zo snel mogelijk (binnen 3
-                            werkdagen) contact met je op voor de vervolgstappen.</p>
-                    </div>
                 </div>
-            </section>
-        </div>
-    </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 lucsweb &bull; <a href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a> &bull; <a
-                    href="#privacy" onclick="openPrivacyModal(event)">Privacyverklaring</a> &bull; Simpel, veilig,
-                goedkoop en compleet voor zzp'er en hobbyist.</p>
-        </div>
-    </footer>
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-1">2. Welke gegevens verzamelen we?</h3>
+                    <p class="text-gray-300 text-xs sm:text-[13px]">
+                        Wanneer je gebruikmaakt van het aanvraag- of contactformulier op deze website, vragen we om de
+                        volgende gegevens:
+                    </p>
+                    <ul class="list-disc list-inside mt-1 space-y-0.5 text-gray-300 text-xs sm:text-[13px]">
+                        <li>Naam</li>
+                        <li>Telefoonnummer</li>
+                        <li>E-mailadres</li>
+                        <li>Gekozen pakket (Flexibel of Consistent)</li>
+                        <li>Eventuele stijlwensen en projectdetails</li>
+                    </ul>
+                </div>
 
-    <!-- Privacy Modal Dialog -->
-    <div id="privacy-modal" class="modal-backdrop" onclick="handleModalBackdropClick(event)">
-        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-header">
-                <h3 id="modal-title">Privacyverklaring lucsweb</h3>
-                <button type="button" class="modal-close" onclick="closePrivacyModal()"
-                    aria-label="Sluiten">&times;</button>
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-1">3. Doel van de gegevensverwerking</h3>
+                    <p class="text-gray-300 text-xs sm:text-[13px]">
+                        Jouw gegevens worden uitsluitend gebruikt om contact met je op te nemen over je offerte- of
+                        websiteaanvraag en om de gewenste diensten uit te voeren. We verkopen of delen jouw gegevens
+                        <strong class="text-white">nooit</strong> met derden voor commerciële doeleinden of
+                        nieuwsbrieven.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-1">4. Gegevensbeveiliging & opslag</h3>
+                    <p class="text-gray-300 text-xs sm:text-[13px]">
+                        Alle communicatie verloopt via een beveiligde SSL-verbinding (HTTPS). Formulierinzendingen
+                        worden veilig afgehandeld via Formspree. Gegevens worden niet langer bewaard dan noodzakelijk is
+                        voor het realiseren van jouw website of administratieve verplichtingen.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-1">5. Cookies & Tracking</h3>
+                    <p class="text-gray-300 text-xs sm:text-[13px]">
+                        Deze website gebruikt <strong class="text-white">geen</strong> tracking-cookies,
+                        advertentienetwerken of privacy-inbreukmakende analytische software.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-1">6. Jouw rechten</h3>
+                    <p class="text-gray-300 text-xs sm:text-[13px]">
+                        Je hebt te allen tijde het recht om jouw persoonsgegevens in te zien, te corrigeren of volledig
+                        te laten verwijderen. Neem hiervoor eenvoudig contact met ons op via het formulier.
+                    </p>
+                </div>
             </div>
-            <div class="modal-body">
-                <p>lucsweb hecht veel waarde aan de bescherming van jouw privacy. In deze beknopte verklaring leggen we
-                    helder uit hoe we omgaan met persoonsgegevens.</p>
 
-                <h4>1. Welke gegevens verzamelen wij?</h4>
-                <p>Wij verzamelen uitsluitend de gegevens die je zelf vrijwillig invult in ons aanvraagformulier: jouw
-                    naam, e-mailadres, telefoonnummer en eventuele opmerkingen of wensen.</p>
-
-                <h4>2. Doel van de verwerking</h4>
-                <p>Jouw persoonsgegevens worden uitsluitend gebruikt om binnen 3 werkdagen persoonlijk contact met je op
-                    te nemen over jouw website-aanvraag en eventuele vervolgstappen.</p>
-
-                <h4>3. Geen cookies of tracking</h4>
-                <p>lucsweb gebruikt géén trackingcookies, marketingcookies of volgsystemen van derden. De website is
-                    100% cookie-vrij en snel.</p>
-
-                <h4>4. Gegevensdeling &amp; beveiliging</h4>
-                <p>Wij verkopen of verstrekken jouw gegevens nooit aan derden. Formulier-inzendingen worden versleuteld
-                    verzonden via onze betrouwbare formulierverwerker (Formspree) en veilig afgeleverd in onze mailbox.
-                </p>
-
-                <h4>5. Bewaartermijn &amp; jouw rechten</h4>
-                <p>Gegevens worden niet langer bewaard dan nodig is voor de communicatie over jouw aanvraag. Je hebt
-                    altijd het recht om je gegevens in te zien, te wijzigen of te laten wissen via <a
-                        href="mailto:lucsweb.info@gmail.com">lucsweb.info@gmail.com</a>.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-modal-close" onclick="closePrivacyModal()">Sluiten</button>
+            <!-- Footer -->
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <span class="text-[11px] text-gray-400">© LUCSWEB</span>
+                <button type="button" onclick="closePrivacyModal()"
+                    class="px-5 py-1.5 rounded-xl bg-[#1da1f2] hover:bg-sky-400 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-sky-950/50 cursor-pointer">
+                    Begrepen
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <div class="scroll-container">
+        <div class="viewport-3d">
+            <canvas id="webgl-canvas"></canvas>
+            <div class="content-layer" id="content-layer"></div>
+        </div>
+    </div>
+
     <script>
-        let selectedPlan = 'Consistent pakket';
+        /* global THREE */
 
-        function selectFormPlan(plan) {
-            selectedPlan = plan;
-            document.getElementById('btn-toggle-flex').classList.toggle('active', plan === 'Flexibel pakket');
-            document.getElementById('btn-toggle-consistent').classList.toggle('active', plan === 'Consistent pakket');
-        }
+        // --- 1. JOUW CONTENT & STAGES ---
+        const stagesData = [
+            {
+                type: "single",
+                title: "LUCSWEB ontwerpservice",
+                subtitle: "Voor interactieve of simpele statische websites",
+                desc: "Een strakke, moderne website die direct vertrouwen wekt bij jouw nieuwe klanten. Vraag hem gerust aan, zonder ook maar iets te betalen.<br><br>Hoe werkt een website precies? Een website is eigenlijk gewoon een lap platte tekst met bepaalde tekens ertussen, waardoor de computer het kan begrijpen. Deze lap tekst in computertaal zetten we op een online programma dat de lap tekst omzet in visuele elementen en laat zien aan de hele wereld met behulp van een naamkaartje: jouw websitenaam.<br><br>Scroll verder om te zien hoe jij je eigen website kunt bezitten.",
+                position: new THREE.Vector3(-3.0, 0, 0),
+                mobilePosition: new THREE.Vector3(0, 1.4, 0),
+                hasStack: true
+            },
+            {
+                type: "dual",
+                left: {
+                    title: "Hoe werkt het precies?",
+                    subtitle: "Het proces",
+                    // ✏️ Pas hier simpel je stappen aan:
+                    steps: [
+                        "Kies je plan (scroll verder).",
+                        "Deel je wensen via het formulier (scroll verder), je hoeft nog niks te betalen.",
+                        "Ik neem zo snel mogelijk contact met je op (1-3 werkdagen) en we bespreken verdere wensen.",
+                        "Ik bouw jouw website en jij besluit of je tevreden bent.",
+                        "Jouw site gaat live!"
+                    ]
+                },
+                right: {
+                    title: "Wie ben ik?",
+                    subtitle: "Lucsweb",
+                    desc: "Mijn doel is om voor zzp'ers en kleine bedrijven een betaalbare en professionele website te bouwen die laat zien waar je als persoon toe in staat bent. Sommige bedrijven vragen honderden of zelfs duizenden euro's voor een website die vaak te uitgebreid en te ingewikkeld is. Het hoeft niet zo te zijn, het kan veel makkelijker en persoonlijker. Een online visitekaartje of persoonlijke gallerij kan een hoop invloed hebben op de instroom van klanten. Bij Lucsweb staat kwaliteit voorop, de klant bepaalt hoe de website eruit ziet. De websites zijn statische websites en daardoor erg snel en veilig, waardoor ze ook geen ingewikkelde inlogsystemen of webshops hebben. Voorbeelden van eerder werk zijn:",
+                    // ✏️ Pas hier simpel je voorbeeld-links aan:
+                    links: [
+                        "beautyinstore.nl",
+                        "tandartschristian.nl",
+                        "lucasle.nl",
+                        "diepline.nl",
+                        "chaubrandstrategist.com"
+                    ]
+                },
+                positionZ: -20
+            },
+            {
+                type: "stackedContact",
+                topLeft: {
+                    title: "Flexibel pakket",
+                    subtitle: "Maximale flexibiliteit, nergens aan vast.",
+                    price: "€ 19,99",
+                    period: "/ maand",
+                    startCosts: "+ €99,99 startkosten",
+                    badge: "Maandelijks opzegbaar",
+                    features: [
+                        "Statische website (visitekaartje / portfolio)",
+                        "Binnen 3 werkdagen online",
+                        "Inclusief hosting & SSL-beveiliging",
+                        "Iedere maand eenvoudig opzegbaar"
+                    ]
+                },
+                bottomLeft: {
+                    title: "Consistent pakket",
+                    subtitle: "Het voordeligste tarief voor het eerste jaar.",
+                    price: "€ 14,99",
+                    period: "/ maand (1e jaar)",
+                    startCosts: "+ €99,99 startkosten",
+                    badge: "Na 1 jaar: €20,-/mnd (maandelijks opzegbaar)",
+                    features: [
+                        "Alles uit het Flexibel pakket",
+                        "1 jaar vast, daarna maandelijks opzegbaar"
+                    ]
+                },
+                right: {
+                    title: "Direct aanvragen",
+                    subtitle: "",
+                    desc: "Kies je pakket en vul je gegevens in. We nemen binnen 3 werkdagen contact met je op voor de vervolgstappen.",
+                    isContact: true
+                },
+                positionZ: -40
+            }
+        ];
 
-        async function handleOrderSubmit(e) {
-            e.preventDefault();
-            const form = document.getElementById('order-form');
-            const submitBtn = document.getElementById('order-submit-btn');
-            const errorBanner = document.getElementById('order-error');
+        // --- 2. THREE.JS BASIS OPZETTEN ---
+        const canvas = document.getElementById('webgl-canvas');
+        const scene = new THREE.Scene();
 
-            const nameVal = document.getElementById('order-name').value;
-            const phoneVal = document.getElementById('order-phone').value;
-            const emailVal = document.getElementById('order-email').value;
-            const styleVal = document.getElementById('order-style').value;
-            const notesVal = document.getElementById('order-notes').value;
+        scene.background = new THREE.Color(0x0b0f19);
+        scene.fog = new THREE.FogExp2(0x0b0f19, 0.040);
 
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Versturen...';
-            if (errorBanner) errorBanner.style.display = 'none';
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 5);
 
-            const formData = new FormData();
-            formData.append('_subject', 'Nieuwe aanvraag (' + selectedPlan + ') - ' + nameVal);
-            formData.append('_replyto', emailVal);
-            formData.append('Gekozen pakket', selectedPlan);
-            formData.append('Naam', nameVal);
-            formData.append('Telefoonnummer', phoneVal);
-            formData.append('E-mailadres', emailVal);
-            formData.append('Stijlvoorkeuren / Thema / Inspiratie', styleVal || 'Nog niet ingevuld (wordt later overlegd)');
-            formData.append('Opmerkingen / Vragen', notesVal || 'Geen');
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.outputEncoding = THREE.sRGBEncoding;
 
-            try {
-                const response = await fetch('https://formspree.io/f/xppqejgy', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
 
-                if (response.ok) {
-                    form.style.display = 'none';
-                    document.getElementById('order-success').style.display = 'block';
+        const pointLight = new THREE.PointLight(0x1da1f2, 1.1, 48);
+        pointLight.position.set(2, 6, 4);
+        scene.add(pointLight);
+
+        // --- DE VLOER (GETEGELD SCHAAKPATROON) ---
+        function createCheckerboardTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            const tileSize = 256;
+            const grout = 4; // subtiele voeg tussen tegels
+
+            // Voegen / achtergrondkleur
+            ctx.fillStyle = '#0b0f19';
+            ctx.fillRect(0, 0, 512, 512);
+
+            const tiles = [
+                { x: 0, y: 0, isLight: true },
+                { x: tileSize, y: 0, isLight: false },
+                { x: 0, y: tileSize, isLight: false },
+                { x: tileSize, y: tileSize, isLight: true }
+            ];
+
+            tiles.forEach(t => {
+                const tx = t.x + grout / 2;
+                const ty = t.y + grout / 2;
+                const tw = tileSize - grout;
+                const th = tileSize - grout;
+
+                if (t.isLight) {
+                    // Zachte leisteen/zilver tegel (niet verblindend wit, behoudt perfecte tekstleesbaarheid)
+                    const grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
+                    grad.addColorStop(0, '#cbd5e1');
+                    grad.addColorStop(0.5, '#94a3b8');
+                    grad.addColorStop(1, '#64748b');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(tx, ty, tw, th);
+
+                    // Subtiel facetrandje
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeRect(tx + 1, ty + 1, tw - 2, th - 2);
                 } else {
-                    throw new Error('Verzenden mislukt');
+                    // Donkere tegel met subtiel diep antraciet/obsidiaan verloop
+                    const grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
+                    grad.addColorStop(0, '#1e293b');
+                    grad.addColorStop(0.5, '#0f172a');
+                    grad.addColorStop(1, '#090d16');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(tx, ty, tw, th);
+
+                    // Donker facetrandje
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(tx + 1, ty + 1, tw - 2, th - 2);
                 }
-            } catch (err) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Versturen \u2192';
-                if (errorBanner) {
-                    errorBanner.style.display = 'block';
-                    const mailtoSubj = encodeURIComponent('Aanvraag website: ' + selectedPlan + ' - ' + nameVal);
-                    const mailtoBody = encodeURIComponent(
-                        'Gekozen pakket: ' + selectedPlan + '\n' +
-                        'Naam: ' + nameVal + '\n' +
-                        'Telefoon: ' + phoneVal + '\n' +
-                        'E-mail: ' + emailVal + '\n' +
-                        'Stijlvoorkeuren: ' + (styleVal || 'Later bespreken') + '\n' +
-                        'Opmerkingen: ' + (notesVal || 'Geen')
-                    );
-                    errorBanner.innerHTML = 'Er ging iets mis bij de online verzending. <a href="mailto:lucsweb.info@gmail.com?subject=' + mailtoSubj + '&body=' + mailtoBody + '">Klik hier om je aanvraag direct per e-mail te sturen &rarr;</a>';
-                }
+            });
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // 200 breed / 120 = 1.67 per tegel; 400 lang / 240 = 1.67 per tegel (perfect vierkante tegels)
+            texture.repeat.set(60, 120);
+            texture.minFilter = THREE.LinearMipmapLinearFilter;
+            texture.magFilter = THREE.LinearFilter;
+            if (renderer && renderer.capabilities) {
+                texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
             }
+            return texture;
         }
 
-        /* Privacy Modal Functionaliteit */
-        function openPrivacyModal(e) {
-            if (e) e.preventDefault();
+        const floorY = -2.5;
+        const floorGeometry = new THREE.PlaneGeometry(200, 400);
+        const checkerTexture = createCheckerboardTexture();
+        const floorMaterial = new THREE.MeshStandardMaterial({
+            map: checkerTexture,
+            roughness: 0.38,
+            metalness: 0.08,
+            transparent: true,
+            opacity: 0.80
+        });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = floorY;
+        floor.position.z = -100;
+        scene.add(floor);
+
+        // --- 3. GELAAGDE STACK & HTML GENEREREN ---
+        const htmlElements = [];
+        const stackObjects = [];
+        const stackMaterials = [];
+        const contentLayer = document.getElementById('content-layer');
+        const textureLoader = new THREE.TextureLoader();
+
+        const websiteImages = [
+            "website1.jpg",
+            "website2.jpg",
+            "website3.jpg",
+            "website4.jpg",
+            "website5.jpg"
+        ];
+
+        function createWebsiteStack(zPosition) {
+            const group = new THREE.Group();
+            group.position.z = zPosition;
+            scene.add(group);
+
+            const reflectionGroup = new THREE.Group();
+            reflectionGroup.position.z = zPosition;
+            scene.add(reflectionGroup);
+
+            const planeWidth = 3.2;
+            const planeHeight = 2.1;
+            const stepSpacingZ = -0.25;
+            const stepSpacingX = 0.4;
+            const stepSpacingY = 0.4;
+
+            websiteImages.forEach((imgSrc, i) => {
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0xffffff,
+                    roughness: 0.2,
+                    metalness: 0.1,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 1.0
+                });
+                stackMaterials.push(material);
+
+                const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
+                const plane = new THREE.Mesh(geometry, material);
+
+                plane.position.z = i * stepSpacingZ;
+                plane.position.x = i * stepSpacingX;
+                plane.position.y = i * stepSpacingY;
+
+                group.add(plane);
+
+                const reflectionPlane = plane.clone();
+                reflectionGroup.add(reflectionPlane);
+
+                textureLoader.load(
+                    imgSrc,
+                    (texture) => {
+                        material.map = texture;
+                        material.color.set(0xffffff);
+                        material.needsUpdate = true;
+                    },
+                    undefined,
+                    (err) => {
+                        console.log("Afbeelding nog niet gevonden:", imgSrc);
+                    }
+                );
+            });
+
+            return { original: group, reflection: reflectionGroup };
+        }
+
+        window.openPrivacyModal = function () {
             const modal = document.getElementById('privacy-modal');
-            if (modal) {
-                modal.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            }
-        }
+            const card = document.getElementById('privacy-modal-card');
+            if (!modal || !card) return;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+            card.classList.remove('scale-95');
+            card.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        };
 
-        function closePrivacyModal() {
+        window.closePrivacyModal = function () {
             const modal = document.getElementById('privacy-modal');
-            if (modal) {
-                modal.classList.remove('open');
-                document.body.style.overflow = '';
-            }
-        }
+            const card = document.getElementById('privacy-modal-card');
+            if (!modal || !card) return;
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+            document.body.style.overflow = '';
+        };
 
-        function handleModalBackdropClick(e) {
-            if (e.target.id === 'privacy-modal') {
-                closePrivacyModal();
-            }
-        }
-
-        document.addEventListener('keydown', function (e) {
+        window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                closePrivacyModal();
+                if (window.closePrivacyModal) window.closePrivacyModal();
             }
         });
 
-        /* Lottie player fallback voor lokaal file:/// openen */
-        window.addEventListener('DOMContentLoaded', function () {
-            if (window.location.protocol === 'file:') {
-                const player = document.getElementById('hero-lottie-player');
-                if (player) {
-                    player.load("data:application/zip;base64,UEsDBBQAAAAIAAAAAABcGXfZeQAAAJ4AAAANAAAAbWFuaWZlc3QuanNvbiXNOw7CMBAE0LtMHRDm0/gAVNwAUVjxChZiL1ovIBTl7ti4nNEbzYyQOQVjyQX+PIMjPNx2tz9gQJJINWbRFKaaIyuNzcK75TIgvOwmWsVJzJiOPFFpjMqo/OwQtbhSJg32p1Gs69W92Qd9P6Kxnjf4Ji195dYbLD9QSwMEFAAAAAgAAAAAAKeEAJ3VBwAAiDkAABUAAABhbmltYXRpb25zLzEyMzQ1Lmpzb27tW21v2zYQ/iuGPksE31/ybUW7fCnQYR0GDEY+eImTeHHiwHa3FUX/+56jJNuyJVup45d4TgvLIo/k8Xj33PFIf0v+Ti4SwxzzSZrcjpMLw9Nk8Jxc4DHCw4g0+YdK8X5fPJ8e0ebTuPd010ejm5ubSN2bTPrTSXLRvUqTYe9rf0zfv82qB094orPp1+RCF338+vHDJXqYYFjUPKDBt2REH73Y5AHFNN7gX3wR39MEdLGOiGPnAypAbZczax0GRuddcQXS2E1eo5QqajjVTGPfxJyk9x/uRJq8l6zoBkUkrLJjUEe+Oaghx4U5daUyzAiXSh8YdzblBa2E4PCJBqCtNghMgFwxLWfUGKugjnKbU3uX4j8kVxDagpD6xYxo8ve9536+PLQcyd0YqzDABEiktE6giRWTe6rIB8uXp076UW5ROLRIpdCizGIpiWAu9diu2+U0kW5g2qaZFExKeQV+0bisok+UQD+7EIBnwdgoAjxRW5YojbbCE+V1cnHbG0763yur2pI5AeGvcKcDczqAPwX+wsv405zxIFMlArN6e/5Kbavwx9MM3XPvDio65WtYI8aEhOyEY0G/8toumNo+tKk0T0w3wtYvvel9R8AyHp/w9tP7dx86v/evp6Nx5zMZVifrXI5HX55BcA9bynshrqNFTVGMvhcNFrzhnyiGUaWsV0FQowpgvFAF26YKg4oheiUE+Sta6CNMXoDmTzBcQvbn6Xj00K/n/HLce74fXIP3nKqW+SnhxBKYRfHO5LMEXPNK0qAlnKJpzVGKpl3ie05QTNo2y8NRpyhYbUSSmlSZKWpIVFEav8GBTW5H48eEFjgWxWWL8nnCLCHM6wKWCykWSFgjvOXlpknNnagkp4qVp/fYFUm04hgxxqJjHEXn2vn0ZTocPPUnpUZ1JMm/N+4/kQX8gOOsSKLWNTnLhDepVI5ZYM5m19TQoNE7Fau+Q/+UD7QElI5xYRcwAagUzBIueKa0TzOAQvAEYZX3RUg440EzHswVwjPPIeKTwgYywH1jA5xtG2xQO8eGIBiXMpUIh+BnN0NDPf3xIEMmmbMwsy49Y2CNwvidrD9W5uhQYMZKVYzAljsp0SRiIQgIZbLyJTMFkEzHX14VR26Hm3CE1L5BD0jvc3VZhIefB8PhJnAgmvbQUFGIE0MGMr99IwMgoQ0y6J0jg8XCWmB+W2Sopz9SZCgtvWL+haXXIUOJJCudnJGhERkqCnFiyEDmt29kgJkvIsO7T+//OGCibas8W5mZMa+RrNuKkzLRkXOykIRoSPdtmSiTWmEDopBCAoWOKJRMCXAAFnlPsYQgK9rzNmmv2VjcLo+V29x2w5TiXzOl1ximXKC2s5mJcTl/u8LmLAfU6NK0R77PYEik0q06fJa24tGUZpSKY1JRtguZSeFTfFp6Q/IfLguVFhvkfENM6Tu8OjglVMIMupAU4TMeImh6DyygjwwdWxuoAPlO5WhCTHHaPQvBnBIpEmou3z1HV0n9UL/l4HEc9BOZmI8eh00jDzm/Bm4SQ8dtuURGlfsUiUUdqA1G0qCmhKsl3rQECwIz4tiAkv8Fs94oMGuYEHrmhrGxtxpzwobVmUiHAg85oSDoOCmMwaEUmddMmzhvpZjg1AgCyGkwrhWgsZYZZGLzEi2QiEQJ53GWzjCNRDIykyFQI+GZgNBRnE/bYWSFXiVn0qgdBQJvOtVwd4viJpdF5l+JUu6IEDAMdKi6c+gSMlUpTBqLBRugJ3QgvpOh4xt910HPLDiQSS4Zr0K4ojT0gvFZuEKC6FfJMgMddTACyQzOD+bxB0FiPE9bjScoBqkNNHypA5DXzQDBfAyxNon0MntZIIYjD06pcRiZE1DNk4rEXBGJQS32FonBTNrs0czCHo282DlS2ypSg9RfEqmV2g/8VbBXgdylCXl8td7rNzQ4lp1sBqDSGnjnmfbxoAuuzVEoAPfl1p+RMU/HlxBu9HvFO/y1n51mvkkHNbf513FMtdtrZoD39OcsR36DOTzxJ4LAgQJckLZU6Z2GEzmeXbgICGEkaTPuJ1BodVLgTwi7b/DHnqUN+Nsz+B8B+NONBcJKaL/joQX4NzQ4FvA3Ou5EM2xIVdw4Gc6CBeDgfd1llkwiasXWTWJagjZ/Ersf2uEUBWfwP0XwB1vMOGyrOUKDcGo5WELYfYM/kLwN+NPFy21OZ7YFf/C3PfgXuH2E4A+AbhX5G4BlSIUxyMC0uffS0OBYwD+HdeSvnIRN41QFyapmyEcKTcH2sZsRMXmXFQWUkKKS8+WXliAqNOQGWEde1JtTi6AJqfZ9kBWqIPrxsDfGy7veWyLc6o3x2PE6fDIBF1PpDjjyckhutzhix9EHUsoSqWuhWgSnb+nWuJCwLqTLEYAbOz9cqMliQAqagG1+07co2em9cYJP6RB6I++ivDgog7UXx3EiouAXMomrCeGw/NXeHsfWxXmcoABOJV97u72GP8zN0MV7j1R/+7vjO9Op8+3x/9Xt8XAAJ0lLteglc0X6SD/Ciuu1gxtf4EnhV0n4hcdGV4RzWJywISJqESXDWykcjApErLhA/MPuiGRSOKM+bYGXdSeexS4oXqNWkl5FkX4YDgfPk35ns/UWlC/IFwTLnUfGRTm6QL/29XjyBfNVPRkDLte4/AHILpMFqH/sjR/yX0leff8PUEsBAgAAFAAAAAgAAAAAAFwZd9l5AAAAngAAAA0AAAAAAAAAAAAAAAAAAAAAAG1hbmlmZXN0Lmpzb25QSwECAAAUAAAACAAAAAAAp4QAndUHAACIOQAAFQAAAAAAAAAAAAAAAACkAAAAYW5pbWF0aW9ucy8xMjM0NS5qc29uUEsFBgAAAAACAAIAfgAAAKwIAAAAAA==");
+        window.selectPackage = function (pkgName) {
+            const input = document.getElementById('form-selected-package');
+            if (input) input.value = pkgName;
+
+            document.querySelectorAll('.package-option').forEach(btn => {
+                const isMatch = btn.getAttribute('data-package') === pkgName;
+                const sub = btn.querySelector('.package-sub');
+                if (isMatch) {
+                    btn.className = 'package-option text-left p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer border-sky-400 bg-sky-500/25 ring-1 ring-sky-400/50 shadow-sm shadow-sky-950/40';
+                    if (sub) sub.className = 'package-sub text-[10px] sm:text-[11px] text-sky-200 mt-0.5 leading-snug';
+                } else {
+                    btn.className = 'package-option text-left p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10';
+                    if (sub) sub.className = 'package-sub text-[10px] sm:text-[11px] text-gray-300 mt-0.5 leading-snug';
                 }
+            });
+        };
+
+        function buildCardHTML(data, isCompact = false) {
+            const padding = isCompact ? "p-2.5 sm:p-4" : (data.isContact ? "p-3 sm:p-4 md:p-5" : "p-4 sm:p-6 md:p-8");
+            let innerHTML = `
+                <div class="apple-glass ${padding}">
+                    <h2 class="${isCompact ? 'text-base sm:text-lg md:text-xl' : (data.isContact ? 'text-lg sm:text-xl md:text-2xl' : 'text-xl sm:text-2xl md:text-3xl')} font-extrabold text-white mb-0.5">${data.title}</h2>
+                    ${data.subtitle ? `<h3 class="text-xs sm:text-sm font-medium text-sky-300 mb-1.5">${data.subtitle}</h3>` : ''}
+                    ${data.desc ? `<p class="text-xs sm:text-sm text-sky-100/90 leading-relaxed ${data.isContact ? 'mb-2' : ''}">${data.desc}</p>` : ''}
+                    ${data.links ? `<div style="display:flex; flex-wrap:wrap; gap:0.35rem 0.5rem; margin-top:0.6rem;">${data.links.map(l => {
+                const url = typeof l === 'string' ? (l.startsWith('http') ? l : `https://${l}`) : l.url;
+                const label = typeof l === 'string' ? l : l.label;
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; padding:0.2rem 0.55rem; border-radius:0.5rem; background:rgba(29,161,242,0.18); border:1px solid rgba(29,161,242,0.35); color:#ffffff; font-size:0.75rem; font-weight:500; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='rgba(29,161,242,0.38)';this.style.borderColor='rgba(112,197,248,0.6)'" onmouseout="this.style.background='rgba(29,161,242,0.18)';this.style.color='#ffffff';this.style.borderColor='rgba(29,161,242,0.35)'">${label}</a>`;
+            }).join('')}</div>` : ''}
+                    ${data.steps ? `<div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem">${data.steps.map((s, i) => `<div style="display:flex;align-items:center;gap:0.6rem"><span style="min-width:1.6rem;height:1.6rem;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(29,161,242,0.25);color:#70c5f8;font-weight:700;font-size:0.75rem">${i + 1}</span><span class="text-xs sm:text-sm text-white">${s}</span></div>`).join('')}</div>` : ''}
+            `;
+
+            if (data.price) {
+                innerHTML += `
+                    <div style="display:flex;align-items:baseline;gap:0.35rem;margin:0.25rem 0 0.1rem 0;">
+                        <span style="font-size:${isCompact ? '1.25rem' : '1.5rem'};font-weight:900;color:#ffffff;letter-spacing:-0.02em;">${data.price}</span>
+                        ${data.period ? `<span style="font-size:0.72rem;color:#cbd5e1;font-weight:500;">${data.period}</span>` : ''}
+                    </div>
+                    ${data.startCosts ? `<div style="font-size:0.72rem;color:#ffffff;font-weight:600;margin-bottom:0.35rem;">${data.startCosts}</div>` : ''}
+                    ${data.badge ? `<div style="display:inline-block;padding:0.18rem 0.5rem;border-radius:0.4rem;background:rgba(29,161,242,0.18);border:1px solid rgba(29,161,242,0.35);color:#ffffff;font-size:0.7rem;font-weight:600;margin-bottom:0.35rem;">${data.badge}</div>` : ''}
+                    ${data.features ? `
+                        <div style="width:100%;height:1px;background:rgba(255,255,255,0.12);margin:0.35rem 0 0.4rem 0;"></div>
+                        <ul style="display:flex;flex-direction:column;gap:0.2rem;list-style:none;padding:0;margin:0;">
+                            ${data.features.map(f => `
+                                <li style="display:flex;align-items:flex-start;gap:0.4rem;font-size:0.72rem;color:#ffffff;line-height:1.3;">
+                                    <span style="color:#1da1f2;font-weight:900;line-height:1;">•</span>
+                                    <span>${f}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                `;
             }
+
+            if (data.isContact) {
+                innerHTML += `
+                    <form action="https://formspree.io/f/jouw-form-id" method="POST" class="mt-2 sm:mt-2.5 space-y-2 sm:space-y-2.5">
+                        <input type="hidden" name="pakket" id="form-selected-package" value="Consistent pakket">
+
+                        <!-- Kies jouw pakket -->
+                        <div>
+                            <label class="block text-xs font-semibold text-white mb-1">Kies jouw pakket:</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" class="package-option text-left p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10" data-package="Flexibel pakket" onclick="selectPackage('Flexibel pakket')">
+                                    <div class="font-bold text-xs sm:text-sm text-white">
+                                        Flexibel pakket
+                                    </div>
+                                    <div class="package-sub text-[10px] sm:text-[11px] text-gray-300 mt-0.5 leading-snug">
+                                        €19,99/mnd • Maandelijks opzegbaar
+                                    </div>
+                                </button>
+
+                                <button type="button" class="package-option text-left p-2 sm:p-2.5 rounded-xl border transition-all duration-200 cursor-pointer border-sky-400 bg-sky-500/25 ring-1 ring-sky-400/50 shadow-sm shadow-sky-950/40" data-package="Consistent pakket" onclick="selectPackage('Consistent pakket')">
+                                    <div class="font-bold text-xs sm:text-sm text-white">
+                                        Consistent pakket
+                                    </div>
+                                    <div class="package-sub text-[10px] sm:text-[11px] text-sky-200 mt-0.5 leading-snug">
+                                        €14,99/mnd 1e jaar • Voordeligste
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Naam & Telefoonnummer -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+                            <div>
+                                <label class="block text-xs font-semibold text-white mb-0.5">Naam <span class="text-sky-400">*</span></label>
+                                <input type="text" name="naam" placeholder="Jouw naam" required class="w-full apple-glass-input px-3 py-1.5 text-xs sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-white mb-0.5">Telefoonnummer <span class="text-sky-400">*</span></label>
+                                <input type="tel" name="telefoon" placeholder="06 - 12 34 56 78" required class="w-full apple-glass-input px-3 py-1.5 text-xs sm:text-sm">
+                            </div>
+                        </div>
+
+                        <!-- E-mailadres -->
+                        <div>
+                            <label class="block text-xs font-semibold text-white mb-0.5">E-mailadres <span class="text-sky-400">*</span></label>
+                            <input type="email" name="email" placeholder="naam@voorbeeld.nl" required class="w-full apple-glass-input px-3 py-1.5 text-xs sm:text-sm">
+                        </div>
+
+                        <!-- Stijlvoorkeuren & inspiratie -->
+                        <div>
+                            <label class="block text-xs font-semibold text-white mb-0.5">Stijlvoorkeuren & inspiratie</label>
+                            <p class="text-[10px] sm:text-[11px] text-sky-200/80 mb-1 leading-snug">Ideeën of websitelinks. Eventuele voorbeelden en bestanden (zoals PDF's) kunnen later worden overlegd.</p>
+                            <textarea name="stijlvoorkeuren" rows="2" placeholder="Bijv. minimalistisch, links naar voorbeelden (kan ook later)..." class="w-full apple-glass-input px-3 py-1.5 text-xs sm:text-sm resize-none"></textarea>
+                        </div>
+
+
+                        <!-- Versturen knop -->
+                        <button type="submit" class="w-full mt-1 bg-gradient-to-r from-sky-500 via-[#1da1f2] to-blue-500 hover:from-sky-400 hover:to-blue-400 text-white font-bold py-2 sm:py-2.5 rounded-xl transition-all duration-300 cursor-pointer shadow-lg shadow-sky-950/60 hover:shadow-sky-500/30 active:scale-[0.99] flex items-center justify-center text-xs sm:text-sm">
+                            Versturen
+                        </button>
+                    </form>
+                `;
+            }
+
+            innerHTML += `</div>`;
+            return innerHTML;
+        }
+
+        stagesData.forEach((stage, sIdx) => {
+            if (stage.type === "single") {
+                if (stage.hasStack) {
+                    stackObjects.push({ obj: createWebsiteStack(stage.position.z), z: stage.position.z, index: sIdx });
+                }
+                const el = document.createElement('div');
+                el.className = 'stage-item';
+                el.innerHTML = buildCardHTML(stage);
+                contentLayer.appendChild(el);
+                htmlElements.push({
+                    element: el,
+                    desktopPosition: stage.position,
+                    side: 'left',
+                    desktopPixelOffset: 0,
+                    index: sIdx,
+                    stageType: 'single'
+                });
+            }
+            else if (stage.type === "dual") {
+                const elLeft = document.createElement('div');
+                elLeft.className = 'stage-item';
+                elLeft.innerHTML = buildCardHTML(stage.left);
+                contentLayer.appendChild(elLeft);
+                htmlElements.push({
+                    element: elLeft,
+                    desktopPosition: new THREE.Vector3(-3.2, 0, stage.positionZ),
+                    side: 'left',
+                    desktopPixelOffset: 0,
+                    index: sIdx,
+                    stageType: 'dual',
+                    dualRole: 'top'
+                });
+
+                const elRight = document.createElement('div');
+                elRight.className = 'stage-item';
+                elRight.innerHTML = buildCardHTML(stage.right);
+                contentLayer.appendChild(elRight);
+                htmlElements.push({
+                    element: elRight,
+                    desktopPosition: new THREE.Vector3(3.2, 0, stage.positionZ),
+                    side: 'right',
+                    desktopPixelOffset: 0,
+                    index: sIdx,
+                    stageType: 'dual',
+                    dualRole: 'bottom'
+                });
+            }
+            else if (stage.type === "stackedContact") {
+                const elTop = document.createElement('div');
+                elTop.className = 'stage-item';
+                elTop.style.cursor = 'pointer';
+                elTop.title = 'Kies Flexibel pakket';
+                elTop.addEventListener('click', () => { if (window.selectPackage) window.selectPackage('Flexibel pakket'); });
+                elTop.innerHTML = buildCardHTML(stage.topLeft, true);
+                contentLayer.appendChild(elTop);
+                htmlElements.push({
+                    element: elTop,
+                    desktopPosition: new THREE.Vector3(-3.2, 0, stage.positionZ),
+                    side: 'left',
+                    desktopPixelOffset: -140,
+                    index: sIdx,
+                    stageType: 'stackedContact',
+                    contactRole: 'top'
+                });
+
+                const elBottom = document.createElement('div');
+                elBottom.className = 'stage-item';
+                elBottom.style.cursor = 'pointer';
+                elBottom.title = 'Kies Consistent pakket';
+                elBottom.addEventListener('click', () => { if (window.selectPackage) window.selectPackage('Consistent pakket'); });
+                elBottom.innerHTML = buildCardHTML(stage.bottomLeft, true);
+                contentLayer.appendChild(elBottom);
+                htmlElements.push({
+                    element: elBottom,
+                    desktopPosition: new THREE.Vector3(-3.2, 0, stage.positionZ),
+                    side: 'left',
+                    desktopPixelOffset: 140,
+                    index: sIdx,
+                    stageType: 'stackedContact',
+                    contactRole: 'middle'
+                });
+
+                const elRight = document.createElement('div');
+                elRight.className = 'stage-item stage-contact-form';
+                elRight.innerHTML = buildCardHTML(stage.right);
+                contentLayer.appendChild(elRight);
+                htmlElements.push({
+                    element: elRight,
+                    desktopPosition: new THREE.Vector3(3.2, 0, stage.positionZ),
+                    side: 'right',
+                    desktopPixelOffset: 0,
+                    index: sIdx,
+                    stageType: 'stackedContact',
+                    contactRole: 'bottom'
+                });
+            }
+        });
+
+        // --- 4. RESPONSIVE LAYOUT & POSITIES ---
+        function updateLayout() {
+            const isMobile = window.innerWidth < 768;
+            const restingY = floorY;
+            const reflectY = floorY;
+            const angle = 0.25;
+
+            stackObjects.forEach(item => {
+                if (isMobile) {
+                    const mobileStackZ = item.z - 4.5;
+                    const mobileOffsetY = 1.2; // Boven de vloer uitgetild
+                    // Centraal onder het tekstblok uitgelijnd
+                    item.obj.original.position.set(-0.52, restingY + mobileOffsetY, mobileStackZ);
+                    item.obj.reflection.position.set(-0.52, reflectY - mobileOffsetY, mobileStackZ);
+                    item.obj.original.scale.set(0.65, 0.65, 0.65);
+                    item.obj.reflection.scale.set(0.65, -0.65, 0.65);
+                    item.obj.original.rotation.y = -0.18;
+                    item.obj.reflection.rotation.y = -0.18;
+                } else {
+                    item.obj.original.scale.set(1, 1, 1);
+                    item.obj.reflection.scale.set(1, -1, 1);
+
+                    const offsetX = 2.0;
+                    const offsetY = 2.0;
+                    const offsetZ = -3.0;
+
+                    item.obj.original.position.set(offsetX, restingY + offsetY, item.z + offsetZ);
+                    item.obj.reflection.position.set(offsetX, restingY - offsetY, item.z + offsetZ);
+                    item.obj.original.rotation.y = -angle;
+                    item.obj.reflection.rotation.y = -angle;
+                }
+            });
+        }
+
+        updateLayout();
+
+        // --- 5. ANIMATIE & SCROLL LOGICA ---
+        let scrollProgress = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            scrollProgress = maxScroll > 0 ? (scrollTop / maxScroll) : 0;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const isMobile = window.innerWidth < 768;
+            const maxScrollZ = (stagesData.length - 1) * 20;
+            const targetZ = 5 - (scrollProgress * maxScrollZ);
+            camera.position.z += (targetZ - camera.position.z) * 0.1;
+
+            if (isMobile) {
+                // --- MOBIELE WEERGAVE LOGICA ---
+                const vh = window.innerHeight;
+                const vw = window.innerWidth;
+                const centerX = vw * 0.5;
+                const centerY = vh * 0.5;
+
+                // 1. EERSTE LAAG (Stage 0):
+                // Tekstblok staat boven de image stack en verdwijnt naar boven langzaam vloeiend.
+                const stage0Item = htmlElements.find(item => item.stageType === 'single');
+                if (stage0Item) {
+                    const restY = vh * 0.22;
+                    const exitDuration = 0.24;
+                    const t0 = Math.min(1, Math.max(0, scrollProgress / exitDuration));
+
+                    if (t0 < 1) {
+                        const upDistance = vh * 0.35 + 40;
+                        const currentY = restY - Math.pow(t0, 1.25) * upDistance;
+                        const visibility = Math.max(0, 1 - Math.pow(t0, 1.15));
+                        const scale = 1.0 - 0.08 * t0;
+
+                        stage0Item.element.style.transform = `translate(-50%, -50%) translate(${centerX}px, ${currentY}px) scale(${scale})`;
+                        stage0Item.element.style.opacity = visibility.toString();
+                        stage0Item.element.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+                    } else {
+                        stage0Item.element.style.opacity = '0';
+                        stage0Item.element.style.pointerEvents = 'none';
+                    }
+                }
+
+                // 3D image stack zachtjes laten meeverdwijnen voorbij Z=0 (blijft nu langer zichtbaar)
+                if (stackMaterials.length > 0) {
+                    const fadeStart = 0.08;
+                    const fadeEnd = 0.33;
+                    let stackAlpha = 1.0;
+                    if (scrollProgress > fadeStart) {
+                        const t = Math.min(1, (scrollProgress - fadeStart) / (fadeEnd - fadeStart));
+                        stackAlpha = Math.max(0, 1 - Math.pow(t, 1.25));
+                    }
+                    stackMaterials.forEach(m => {
+                        m.opacity = stackAlpha;
+                    });
+                }
+
+                // 2. TWEEDE LAAG (Stage 1):
+                // Verschijnt waarbij de 2 blokken boven elkaar verschijnen.
+                // Daarna verdwijnen ze heel langzaam maar steeds sneller vloeiend naar boven en onder.
+                const dualTop = htmlElements.find(item => item.stageType === 'dual' && item.dualRole === 'top');
+                const dualBottom = htmlElements.find(item => item.stageType === 'dual' && item.dualRole === 'bottom');
+
+                if (dualTop && dualBottom) {
+                    const enterStart = 0.18;
+                    const enterEnd = 0.24;
+                    const holdEnd = 0.52;
+                    const exitEnd = 0.64;
+
+                    if (scrollProgress >= enterStart && scrollProgress <= exitEnd) {
+                        const hTop = dualTop.element.offsetHeight || 110;
+                        const hBottom = dualBottom.element.offsetHeight || 110;
+                        const gap = 16;
+
+                        const restYTop = centerY - (hTop / 2 + gap / 2);
+                        const restYBottom = centerY + (hBottom / 2 + gap / 2);
+
+                        let visibility = 0;
+                        let yTop = restYTop;
+                        let yBottom = restYBottom;
+                        let scale = 1.0;
+
+                        if (scrollProgress < enterEnd) {
+                            const tIn = (scrollProgress - enterStart) / (enterEnd - enterStart);
+                            const easeIn = 1 - Math.pow(1 - tIn, 2);
+                            visibility = easeIn;
+                            scale = 0.90 + 0.10 * easeIn;
+                            yTop = restYTop - 35 * (1 - easeIn);
+                            yBottom = restYBottom + 35 * (1 - easeIn);
+                        } else if (scrollProgress <= holdEnd) {
+                            visibility = 1.0;
+                            scale = 1.0;
+                            yTop = restYTop;
+                            yBottom = restYBottom;
+                        } else {
+                            // "heel langzaam maar steeds sneller vloeiend naar boven en onder verdwijnen"
+                            const tOut = (scrollProgress - holdEnd) / (exitEnd - holdEnd);
+                            const accel = Math.pow(tOut, 2.3);
+                            visibility = Math.max(0, 1 - Math.pow(tOut, 1.8));
+                            scale = 1.0 - 0.05 * accel;
+
+                            const maxMove = vh * 0.45 + 100;
+                            yTop = restYTop - accel * maxMove;       // naar boven
+                            yBottom = restYBottom + accel * maxMove; // naar onder
+                        }
+
+                        dualTop.element.style.transform = `translate(-50%, -50%) translate(${centerX}px, ${yTop}px) scale(${scale})`;
+                        dualTop.element.style.opacity = visibility.toString();
+                        dualTop.element.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+
+                        dualBottom.element.style.transform = `translate(-50%, -50%) translate(${centerX}px, ${yBottom}px) scale(${scale})`;
+                        dualBottom.element.style.opacity = visibility.toString();
+                        dualBottom.element.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+                    } else {
+                        dualTop.element.style.opacity = '0';
+                        dualTop.element.style.pointerEvents = 'none';
+                        dualBottom.element.style.opacity = '0';
+                        dualBottom.element.style.pointerEvents = 'none';
+                    }
+                }
+
+                // 3. DERDE LAAG (Stage 2):
+                // 3 blokken boven elkaar met formulier onderaan. Zelfde onderlinge afstanden.
+                const contactTop = htmlElements.find(item => item.stageType === 'stackedContact' && item.contactRole === 'top');
+                const contactMiddle = htmlElements.find(item => item.stageType === 'stackedContact' && item.contactRole === 'middle');
+                const contactBottom = htmlElements.find(item => item.stageType === 'stackedContact' && item.contactRole === 'bottom');
+
+                if (contactTop && contactMiddle && contactBottom) {
+                    const enterStart = 0.68;
+                    const enterEnd = 0.88;
+
+                    if (scrollProgress >= enterStart) {
+                        const h1 = contactTop.element.offsetHeight || 72;
+                        const h2 = contactMiddle.element.offsetHeight || 72;
+                        const h3 = contactBottom.element.offsetHeight || 210;
+
+                        // Zelfde onderlinge afstand tussen de kaarten:
+                        const gap = vh < 700 ? 10 : 13;
+                        const totalH = h1 + gap + h2 + gap + h3;
+
+                        // Start netjes bovenaan (onder de header) zodat pakket 1 & 2 direct goed zichtbaar zijn.
+                        // Het formulierblok mag aan de onderkant uitsteken; bij verder scrollen schuift de stack vloeiend omhoog.
+                        const initialTop = vh < 700 ? 46 : 52;
+                        const targetBottom = vh - 20;
+                        const maxScrollShift = Math.max(0, (initialTop + totalH) - targetBottom);
+                        const progressInStage2 = Math.min(1, Math.max(0, (scrollProgress - enterStart) / (1.0 - enterStart)));
+                        const scrollShift = maxScrollShift * Math.pow(progressInStage2, 1.2);
+
+                        const currentTop = initialTop - scrollShift;
+
+                        const restY1 = currentTop + h1 / 2;
+                        const restY2 = currentTop + h1 + gap + h2 / 2;
+                        const restY3 = currentTop + h1 + gap + h2 + gap + h3 / 2;
+
+                        let visibility = 1.0;
+                        let slideOffset = 0;
+                        let scale = 1.0;
+
+                        if (scrollProgress < enterEnd) {
+                            const t3 = (scrollProgress - enterStart) / (enterEnd - enterStart);
+                            const ease3 = 1 - Math.pow(1 - t3, 2);
+                            visibility = ease3;
+                            scale = 0.92 + 0.08 * ease3;
+                            slideOffset = 18 * (1 - ease3);
+                        }
+
+                        contactTop.element.style.transform = `translate(-50%, -50%) translate(${centerX}px, ${restY1 + slideOffset}px) scale(${scale})`;
+                        contactTop.element.style.opacity = visibility.toString();
+                        contactTop.element.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+
+                        contactMiddle.element.style.transform = `translate(-50%, -50%) translate(${centerX}px, ${restY2 + slideOffset}px) scale(${scale})`;
+                        contactMiddle.element.style.opacity = visibility.toString();
+                        contactMiddle.element.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+
+                        contactBottom.element.style.transform = `translate(-50%, -50%) translate(${centerX}px, ${restY3 + slideOffset}px) scale(${scale})`;
+                        contactBottom.element.style.opacity = visibility.toString();
+                        contactBottom.element.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+                    } else {
+                        contactTop.element.style.opacity = '0';
+                        contactTop.element.style.pointerEvents = 'none';
+                        contactMiddle.element.style.opacity = '0';
+                        contactMiddle.element.style.pointerEvents = 'none';
+                        contactBottom.element.style.opacity = '0';
+                        contactBottom.element.style.pointerEvents = 'none';
+                    }
+                }
+            } else {
+                // --- DESKTOP WEERGAVE LOGICA (ONGEWIJZIGD) ---
+                if (stackMaterials.length > 0) {
+                    stackMaterials.forEach(m => {
+                        m.opacity = 1.0;
+                    });
+                }
+
+                htmlElements.forEach(item => {
+                    const pos = item.desktopPosition;
+                    const vector = pos.clone();
+                    vector.project(camera);
+
+                    if (vector.z < 1) {
+                        const targetScreenX = item.side === 'left' ? window.innerWidth * 0.28 : window.innerWidth * 0.72;
+                        const projectedX = (vector.x * 0.5 + 0.5) * window.innerWidth;
+                        const x = isNaN(projectedX) ? targetScreenX : (targetScreenX * 0.7 + projectedX * 0.3);
+
+                        const baseScreenY = (-(vector.y * 0.5) + 0.5) * window.innerHeight;
+                        const y = baseScreenY + item.desktopPixelOffset;
+
+                        const dz = camera.position.z - pos.z;
+                        const distanceToCamera = Math.abs(dz);
+                        const maxDist = 25;
+                        let visibility = 0;
+                        let scale = 0.9;
+
+                        if (distanceToCamera < maxDist) {
+                            const progress = distanceToCamera / maxDist;
+                            visibility = Math.pow(Math.max(0, 1 - progress), 0.7);
+                            scale = 0.82 + 0.18 * (1 - progress * 0.5);
+                        } else {
+                            visibility = 0;
+                        }
+
+                        if (visibility > 0.01) {
+                            item.element.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`;
+                            item.element.style.opacity = visibility.toString();
+                            item.element.style.pointerEvents = visibility > 0.5 ? 'auto' : 'none';
+                        } else {
+                            item.element.style.opacity = '0';
+                            item.element.style.pointerEvents = 'none';
+                        }
+                    } else {
+                        item.element.style.opacity = '0';
+                        item.element.style.pointerEvents = 'none';
+                    }
+                });
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            updateLayout();
         });
     </script>
 </body>
