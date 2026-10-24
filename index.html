@@ -396,18 +396,9 @@
 
             <!-- Header -->
             <div class="flex items-center justify-between pb-3.5 border-b border-white/10">
-                <div class="flex items-center gap-2.5">
-                    <div
-                        class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg sm:text-xl font-extrabold text-white" id="info-modal-title">Over LUCSWEB</h2>
-                        <p class="text-[11px] text-sky-300/80" id="info-modal-subtitle">Bedrijfsinformatie & Contact</p>
-                    </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-white" id="info-modal-title">Over LUCSWEB</h2>
+                    <p class="text-[11px] text-sky-300/80" id="info-modal-subtitle">Bedrijfsinformatie & Contact</p>
                 </div>
                 <button type="button" onclick="closeInfoModal()"
                     class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer"
@@ -442,18 +433,9 @@
 
             <!-- Header -->
             <div class="flex items-center justify-between pb-3.5 border-b border-white/10">
-                <div class="flex items-center gap-2.5">
-                    <div
-                        class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg sm:text-xl font-extrabold text-white">Privacyverklaring</h2>
-                        <p class="text-[11px] text-sky-300/80">LUCSWEB • Veilig & Transparant</p>
-                    </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-white">Privacyverklaring</h2>
+                    <p class="text-[11px] text-sky-300/80">LUCSWEB • Veilig & Transparant</p>
                 </div>
                 <button type="button" onclick="closePrivacyModal()"
                     class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer"
@@ -553,7 +535,7 @@
             titel: "Over LUCSWEB",
             subtitel: "Bedrijfsinformatie & Contact",
             // ✏️ Jouw foto: plaats je gewenste foto in deze map en vul hier de bestandsnaam in (bijv. "foto.jpg" of "profielfoto.png"):
-            foto: "foto.jpg",
+            foto: "profiel.jpg",
             // ✏️ Vestigingsplek:
             locatie: "Schipluiden, Zuid-Holland, Nederland",
             // ✏️ KVK-nummer (vul later je nummer in zodra je deze hebt):
@@ -603,6 +585,7 @@
                     desc: "Mijn doel is om zzp'ers en kleine bedrijven een betaalbare, professionele website te bieden die de mogelijkheden van hun bedrijf laat zien. Veel concurrenten vragen honderden tot duizenden euro's voor een vaak ingewikkelde site. Bij Lucsweb houden we het simpel, persoonlijk en snel met statische websites, zonder dure inlogsystemen of webshops.",
                     // ✏️ Pas hier simpel je voorbeeld-links aan:
                     links: [
+                        { label: "Voorbeeld Tandarts", url: "https://lucsweb.github.io/Voorbeeld-Tandarts/" },
                         "beautyinstore.nl",
                         "tandartschristian.nl",
                         "lucasle.nl",
@@ -1018,7 +1001,8 @@
             "website2.jpg",
             "website3.jpg",
             "website4.jpg",
-            "website5.jpg"
+            "website5.jpg",
+            "website6.jpg"
         ];
 
         let activeLaptopScreenMesh = null;
