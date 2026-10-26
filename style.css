@@ -1,0 +1,259 @@
+/* ===================================================
+   RETRO CRT 3D DIMENSION - CSS STYLING
+   =================================================== */
+
+:root {
+  --crt-amber: #ffb000;
+  --crt-amber-glow: rgba(255, 176, 0, 0.4);
+  --crt-bg: #0b0906;
+  --crt-bezel: #16120e;
+  --crt-border: #382c1e;
+  --terminal-font: 'VT323', 'Fira Code', monospace;
+  --body-font: 'Outfit', sans-serif;
+  --code-font: 'Fira Code', monospace;
+  --scanline-opacity: 0.65;
+  --curvature-rad: 28px;
+}
+
+/* THEME MODES */
+body.theme-cyber-green {
+  --crt-amber: #00ff66;
+  --crt-amber-glow: rgba(0, 255, 102, 0.4);
+  --crt-bg: #020d06;
+  --crt-bezel: #091a0f;
+  --crt-border: #143d22;
+}
+
+body.theme-synth-cyan {
+  --crt-amber: #00f0ff;
+  --crt-amber-glow: rgba(0, 240, 255, 0.45);
+  --crt-bg: #020c12;
+  --crt-bezel: #081a24;
+  --crt-border: #113c52;
+}
+
+body.theme-monochrome {
+  --crt-amber: #e8eaed;
+  --crt-amber-glow: rgba(232, 234, 237, 0.35);
+  --crt-bg: #0a0a0a;
+  --crt-bezel: #181818;
+  --crt-border: #383838;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background-color: #030303;
+  color: var(--crt-amber);
+  font-family: var(--body-font);
+  overflow-x: hidden;
+  scroll-behavior: auto;
+  /* Smoothed by JS */
+}
+
+/* 3D WebGL Canvas Layer - Fixed met subtiele fisheye lens kromming */
+#canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at center, #07070a 0%, #010102 100%);
+  transition: opacity 0.5s ease-out;
+  /* Subtiele fisheye barrel perspectief voor een ultra realistische lens look */
+  transform: perspective(700px) scale(1.025);
+  transform-origin: center center;
+}
+
+/* Vignette overlay met diepe bolle lensranden */
+.crt-overlay-vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.45) 65%, rgba(0, 0, 0, 0.98) 100%);
+  transition: opacity 0.6s ease;
+}
+
+/* Dynamisch canvas voor ultra-duidelijke analoge film grain / ruis over de hele viewport */
+#grainCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  image-rendering: pixelated;
+}
+
+/* Echte optische Fisheye Barrel Distortion rand / lenskromming over de viewport */
+.viewport-fisheye-lens {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 11;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 160px rgba(0, 0, 0, 0.96),
+    inset 0 0 60px rgba(0, 0, 0, 1.0);
+}
+
+@keyframes grainJitter {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-1.5%, 1.5%);
+  }
+
+  50% {
+    transform: translate(1.5%, -1%);
+  }
+
+  75% {
+    transform: translate(-1%, -1.5%);
+  }
+
+  100% {
+    transform: translate(1%, 1%);
+  }
+}
+
+
+
+/* Intro Overlay (allereerste begin voordat je scrollt) */
+.intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 8;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5vh 20px;
+}
+
+.intro-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.intro-logo {
+  width: clamp(90px, 11vw, 150px);
+  height: auto;
+  opacity: 0.95;
+  margin-top: 8vh;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.intro-scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2.5vh;
+}
+
+.intro-scroll-text {
+  font-family: 'Space Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 400;
+  user-select: none;
+}
+
+/* Zoom Controls (- en + stand in het midden boven de TV) */
+.zoom-controls {
+  position: fixed;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  z-index: 20;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.zoom-controls.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.zoom-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: 'Space Mono', 'Fira Code', monospace;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  outline: none;
+  user-select: none;
+  transition: color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+
+.zoom-btn:hover {
+  color: rgba(255, 255, 255, 0.85);
+  transform: scale(1.12);
+}
+
+.zoom-btn:active {
+  transform: scale(0.92);
+}
+
+.zoom-btn.active {
+  color: #ffffff;
+  font-weight: 700;
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+}
+
+/* Scroll Container */
+#scroll-track {
+  position: relative;
+  width: 100%;
+  z-index: 5;
+}
+
+/* Spacer where the 3D room zoom takes place */
+.zoom-spacer {
+  height: 200vh;
+  width: 100%;
+  pointer-events: none;
+}

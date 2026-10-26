@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucsweb</title>
+  <meta name="description" content="Lucsweb - Websites voor zzp'ers en MKB.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Three.js CDN & GLTFLoader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+  <div id="canvas-container"></div>
+  <div class="crt-overlay-vignette" id="roomVignette"></div>
+  <canvas id="grainCanvas"></canvas>
+  <div class="viewport-fisheye-lens"></div>
+
+  <div id="intro-overlay" class="intro-overlay">
+    <div class="intro-content">
+      <img src="LUCSWEB_white.png" alt="LUCSWEB" class="intro-logo">
+      <div class="intro-scroll-hint">
+        <span class="intro-scroll-text">scroll</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="zoom-controls" class="zoom-controls">
+    <button id="zoom-btn-minus" class="zoom-btn active" aria-label="Standaard zoom">-</button>
+    <button id="zoom-btn-plus" class="zoom-btn" aria-label="Verder inzoomen">+</button>
+  </div>
+
+  <div id="scroll-track">
+    <div class="zoom-spacer"></div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
