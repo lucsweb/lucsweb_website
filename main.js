@@ -1695,11 +1695,6 @@ function initMobileUI() {
   ui.innerHTML = `
     <!-- Vintage Audio/Video Deck Behuizing (geïnspireerd op cassette/CD speler) -->
     <div class="mob-deck-case">
-      <!-- Bovenpaneel: subtiele vintage rand met merknaam "(Creative) Webdesign" -->
-      <div class="mob-deck-topbar">
-        <div class="mob-deck-brand">(Creative) Webdesign</div>
-      </div>
-
       <!-- CRT / Schermvenster -->
       <div class="mob-phone-screen">
         <div class="mob-crt-overlay">
