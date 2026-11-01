@@ -1,19 +1,171 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lucsweb</title>
-  <meta name="description" content="Lucsweb - Websites voor zzp'ers en MKB.">
+  <title>Lucsweb | Betaalbare Websites voor ZZP of hobbyist | Vanaf €14,99/mnd</title>
+
+  <!-- Primaire SEO Meta Tags -->
+  <meta name="description"
+    content="Lucsweb ontwerpt, bouwt en host snelle, moderne websites voor zzp'ers en MKB. Al vanaf €14,99 per maand. Geen torenhoge kosten, binnen 2 werkdagen contact.">
+  <meta name="keywords"
+    content="website laten maken, zzp website, mkb website, betaalbare website, webdesign Schipluiden, webdesign Zuid-Holland, snelle website, lucsweb">
+  <meta name="author" content="Lucsweb">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://lucsweb.nl/">
+
+  <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lucsweb.nl/">
+  <meta property="og:title" content="Lucsweb | Betaalbare Websites voor ZZP & MKB">
+  <meta property="og:description"
+    content="Ontwerp, bouw en hosting van moderne websites vanaf €14,99/maand. Binnen 2 dagen contact via WhatsApp of e-mail.">
+  <meta property="og:image" content="https://lucsweb.nl/LUCSWEB.png">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:site_name" content="Lucsweb">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lucsweb | Betaalbare Websites voor ZZP & MKB">
+  <meta name="twitter:description"
+    content="Complete, unieke websites voor zzp'ers en het mkb vanaf €14,99/mnd. Snel geleverd en persoonlijk contact.">
+  <meta name="twitter:image" content="https://lucsweb.nl/LUCSWEB.png">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="LUCSWEB.png">
+  <link rel="apple-touch-icon" href="LUCSWEB.png">
+
+  <!-- Structured Data (JSON-LD) voor Google Rich Snippets & Lokale SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Lucsweb",
+    "image": "https://lucsweb.nl/LUCSWEB.png",
+    "url": "https://lucsweb.nl/",
+    "telephone": "+31600000000",
+    "email": "info@lucsweb.nl",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Schipluiden",
+      "addressRegion": "Zuid-Holland",
+      "addressCountry": "NL"
+    },
+    "identifier": {
+      "@type": "PropertyValue",
+      "name": "KVK-nummer",
+      "value": "42202125"
+    },
+    "priceRange": "€14.99 - €19.99 per maand",
+    "description": "Lucsweb bouwt en host betaalbare, professionele websites voor zzp'ers en hobbyisten.",
+    "founder": {
+      "@type": "Person",
+      "name": "Lucas",
+      "jobTitle": "Webdesigner & Developer"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Website Pakketten",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Consistent Pakket",
+            "description": "Eerste jaar vast tarief inclusief ontwerp, bouw en hosting met eenmalige startkosten van €99.99"
+          },
+          "price": "14.99",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Flexibel Pakket",
+            "description": "Maandelijks opzegbaar hostingpakket met eenmalige startkosten van €99.99"
+          },
+          "price": "19.99",
+          "priceCurrency": "EUR"
+        }
+      ]
+    }
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Space+Mono:wght@400;700&family=VT323&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
   <!-- Three.js CDN & GLTFLoader -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
+
 <body>
+  <!-- Semantische fallback voor zoekmachines (Googlebot/Bingbot kunnen WebGL canvas niet lezen) -->
+  <header class="sr-only">
+    <h1>Lucsweb - Complete en betaalbare websites voor ZZP en MKB</h1>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#tarieven">Tarieven</a></li>
+        <li><a href="#info">Over Lucsweb</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="sr-only">
+    <article id="home">
+      <h2>Moderne en unieke websites voor een scherpe prijs</h2>
+      <p>LUCSWEB levert complete websites, simpel tot uitgebreid. Ben jij een zzp'er of wil je projecten of werk snel
+        en simpel laten zien? Ik ontwerp, bouw en host je website voor een zeer scherpe prijs, al vanaf €14,99 per
+        maand.</p>
+      <section>
+        <h3>Mijn werk en voorbeeldwebsites</h3>
+        <ul>
+          <li><a href="https://tandartschristian.nl" target="_blank" rel="noopener">tandartschristian.nl</a></li>
+          <li><a href="https://chaubrandstrategist.com" target="_blank" rel="noopener">chaubrandstrategist.com</a></li>
+          <li><a href="https://lucasle.nl" target="_blank" rel="noopener">lucasle.nl</a></li>
+          <li><a href="https://beautyinstore.nl" target="_blank" rel="noopener">beautyinstore.nl</a></li>
+          <li><a href="https://diepline.nl" target="_blank" rel="noopener">diepline.nl</a></li>
+          <li><a href="https://lucsweb.github.io/Voorbeeld-Tandarts/" target="_blank" rel="noopener">voorbeeld
+              tandarts</a></li>
+        </ul>
+      </section>
+    </article>
+
+    <article id="tarieven">
+      <h2>Tarieven en Website Pakketten</h2>
+      <p>Samenwerken gaat heel makkelijk. Je kiest een pakket voor het hosten en bouwen van je website:</p>
+      <section>
+        <h3>Consistent Pakket: €14.99 / maand</h3>
+        <p>Eenmalige startkosten: €99.99. Eerste jaar vast tarief. Na eerste jaar maandelijks opzegbaar voor €14.99 per maand.</p>
+      </section>
+      <section>
+        <h3>Flexibel Pakket: €19.99 / maand</h3>
+        <p>Maandelijks opzegbaar met eenmalige startkosten van €99.99.</p>
+      </section>
+      <section>
+        <h3>Vrijblijvende Aanvraag Indienen</h3>
+        <p>Vraag direct een website aan. Binnen 2 werkdagen neem ik persoonlijk contact met je op via WhatsApp of
+          e-mail.</p>
+      </section>
+    </article>
+
+    <article id="info">
+      <h2>Over Lucsweb & Contact</h2>
+      <p>Lucsweb is gevestigd in Schipluiden, Zuid-Holland, Nederland. KVK-nummer: 42202125. E-mail: info@lucsweb.nl.
+      </p>
+      <p>Persoonlijk contact, korte communicatielijnen en een snelle oplevering van je professionele website.</p>
+    </article>
+  </main>
+
+  <div id="mobile-ui" aria-hidden="true"></div>
+
   <div id="canvas-container"></div>
   <div class="crt-overlay-vignette" id="roomVignette"></div>
   <canvas id="grainCanvas"></canvas>
@@ -39,4 +191,5 @@
 
   <script src="main.js"></script>
 </body>
+
 </html>

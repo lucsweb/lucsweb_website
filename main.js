@@ -86,18 +86,31 @@ class RetroAudioEngine {
 
 const audio = new RetroAudioEngine();
 
-const container = document.getElementById('canvas-container');
-const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x020203, 0.032);
+const isMobileDevice = window.innerWidth <= 768;
 
-const camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.1, 100);
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-renderer.setClearColor(0x020203, 1);
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-container.appendChild(renderer.domElement);
+// ===== MOBIELE WEERGAVE: native HTML, geen 3D =====
+// Op mobiel wordt alle Three.js / WebGL NIET gestart.
+// De content wordt als native HTML in #mobile-ui gerendered (zie initMobileUI()).
+// ====================================================
+
+const container = document.getElementById('canvas-container');
+let scene = null;
+let camera = null;
+let renderer = null;
+
+if (!isMobileDevice) {
+  scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x020203, 0.032);
+
+  camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.1, 100);
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+  renderer.setClearColor(0x020203, 1);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  container.appendChild(renderer.domElement);
+}
 
 const grainCanvas = document.getElementById('grainCanvas');
 let grainCtx = null;
@@ -310,8 +323,8 @@ const INFO_DATA = {
   titel: "LUCSWEB",
   gegevens: [
     { label: "Locatie:", waarde: "Schipluiden, Zuid-Holland, Nederland" },
-    { label: "KVK:",     waarde: "42202125" },
-    { label: "Email:",   waarde: "info@lucsweb.nl" }
+    { label: "KVK:", waarde: "42202125" },
+    { label: "Email:", waarde: "info@lucsweb.nl" }
   ],
   secties: [
     {
@@ -342,19 +355,20 @@ const FORM_DATA = {
   activeField: null // 'name' | 'email' | 'phone' | null
 };
 
-async function submitFormspree() {
+async function submitFormspree(onSuccess, onError) {
   if (FORM_DATA.sending || FORM_DATA.submitted) return;
 
   if (!FORM_DATA.name.trim() && !FORM_DATA.email.trim() && !FORM_DATA.phone.trim()) {
     FORM_DATA.errorMessage = "Vul a.u.b. je contactgegevens in.";
-    screenTexture.needsUpdate = true;
+    if (onError) onError(FORM_DATA.errorMessage);
+    else if (screenTexture) screenTexture.needsUpdate = true;
     return;
   }
 
   FORM_DATA.sending = true;
   FORM_DATA.errorMessage = null;
-  setActiveFormField(null);
-  screenTexture.needsUpdate = true;
+  if (!isMobileDevice) { setActiveFormField(null); }
+  if (screenTexture) screenTexture.needsUpdate = true;
 
   try {
     const response = await fetch(FORMSPREE_ENDPOINT, {
@@ -376,17 +390,20 @@ async function submitFormspree() {
       FORM_DATA.submitted = true;
       FORM_DATA.sending = false;
       FORM_DATA.errorMessage = null;
+      if (onSuccess) onSuccess();
     } else {
       const data = await response.json();
       FORM_DATA.sending = false;
       FORM_DATA.errorMessage = (data && data.errors && data.errors[0]) ? data.errors[0].message : "Fout bij verzenden. Probeer opnieuw.";
+      if (onError) onError(FORM_DATA.errorMessage);
     }
   } catch (err) {
     FORM_DATA.sending = false;
     FORM_DATA.errorMessage = "Verbindingsfout. Controleer je internet.";
+    if (onError) onError(FORM_DATA.errorMessage);
   }
 
-  screenTexture.needsUpdate = true;
+  if (screenTexture) screenTexture.needsUpdate = true;
 }
 
 let formHitboxes = {};
@@ -680,7 +697,7 @@ function renderScreenTexture(time) {
 
     cursorY += box1H + AFSTAND_TUSSEN_PAKKETTEN;
 
-    const box2H = 185;
+    const box2H = 220;
     const box2Y = cursorY;
 
     screenCtx.lineWidth = borderWidth;
@@ -696,12 +713,13 @@ function renderScreenTexture(time) {
     screenCtx.fillText("€14.99", boxX + 24, box2Y + 68);
     screenCtx.fillStyle = '#000000';
     screenCtx.font = '400 19px "Space Mono", "Fira Code", monospace';
-    screenCtx.fillText("/ maand (eerste 12 maanden)", boxX + 125, box2Y + 72);
+    screenCtx.fillText("/ maand", boxX + 125, box2Y + 72);
 
     screenCtx.fillStyle = '#111111';
     screenCtx.font = '400 19px "Space Mono", "Fira Code", monospace';
-    screenCtx.fillText("• Eerste jaar vast tarief (niet opzegbaar tot einde jaar)", boxX + 24, box2Y + 108);
-    screenCtx.fillText("• Na het eerste jaar: €17.99 per maand, maandelijks opzegbaar", boxX + 24, box2Y + 144);
+    screenCtx.fillText("• Eenmalige startkosten: €99.99", boxX + 24, box2Y + 108);
+    screenCtx.fillText("• Eerste jaar vast tarief (inclusief ontwerp, bouw en hosting)", boxX + 24, box2Y + 144);
+    screenCtx.fillText("• Na eerste jaar maandelijks opzegbaar voor €14.99 per maand", boxX + 24, box2Y + 180);
 
     cursorY += box2H + AFSTAND_TOT_AANVRAAGKADER;
 
@@ -1108,214 +1126,222 @@ function renderScreenTexture(time) {
   screenTexture.needsUpdate = true;
 }
 
-const roomGroup = new THREE.Group();
-
-const textureLoader = new THREE.TextureLoader();
-const woodDiffuse = textureLoader.load('wood_floor_diffuse.jpg');
-woodDiffuse.wrapS = THREE.RepeatWrapping;
-woodDiffuse.wrapT = THREE.RepeatWrapping;
-woodDiffuse.repeat.set(12, 12);
-woodDiffuse.anisotropy = 8;
-
-const floorGeo = new THREE.PlaneGeometry(50, 50, 128, 128);
-const floorMat = new THREE.MeshStandardMaterial({
-  map: woodDiffuse,
-  bumpMap: woodDiffuse,
-  bumpScale: 0.035,
-  displacementMap: woodDiffuse,
-  displacementScale: 0.012,
-  roughness: 0.94, // Mat hout, geen glimmende/spiegelende reflecties
-  metalness: 0.0   // 100% niet-metaal/niet-reflecterend
-});
-const floor = new THREE.Mesh(floorGeo, floorMat);
-floor.rotation.x = -Math.PI / 2;
-floor.position.y = 0; // Vloerniveau
-floor.receiveShadow = true;
-roomGroup.add(floor);
-
-const wallGeo = new THREE.PlaneGeometry(50, 25);
-const wallMat = new THREE.MeshStandardMaterial({
-  color: 0x060608,
-  roughness: 0.95
-});
-const backWall = new THREE.Mesh(wallGeo, wallMat);
-backWall.position.set(0, 12, -10);
-backWall.receiveShadow = true;
-roomGroup.add(backWall);
-
-const sideWall = new THREE.Mesh(wallGeo, wallMat);
-sideWall.position.set(-15, 12, 0);
-sideWall.rotation.y = Math.PI / 2;
-roomGroup.add(sideWall);
-
-const tvGroup = new THREE.Group();
-tvGroup.position.set(0, 0, 0);
-
+let roomGroup = null;
+let tvGroup = null;
 let startCamPos = new THREE.Vector3(0.0, 1.1, 4.2);
 let startCamTarget = new THREE.Vector3(0, 0.6, 0);
 let endCamPos = new THREE.Vector3(0, 0.6, 1.2);
 let endCamTarget = new THREE.Vector3(0, 0.6, 0);
 
 let crtScreenMesh = null;
+let crtScreenLight = null;
+let crtFillLight = null;
+let ambientLight = null;
+let overheadSpotlight = null;
 
-const gltfLoader = new THREE.GLTFLoader();
+if (!isMobileDevice) {
+  roomGroup = new THREE.Group();
 
-gltfLoader.load(
-  'television_02.glb',
-  function (gltf) {
-    const model = gltf.scene;
+  const textureLoader = new THREE.TextureLoader();
+  const woodDiffuse = textureLoader.load('wood_floor_diffuse.jpg');
+  woodDiffuse.wrapS = THREE.RepeatWrapping;
+  woodDiffuse.wrapT = THREE.RepeatWrapping;
+  woodDiffuse.repeat.set(12, 12);
+  woodDiffuse.anisotropy = 8;
 
-    const box = new THREE.Box3().setFromObject(model);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
+  const floorGeo = new THREE.PlaneGeometry(50, 50, 128, 128);
+  const floorMat = new THREE.MeshStandardMaterial({
+    map: woodDiffuse,
+    bumpMap: woodDiffuse,
+    bumpScale: 0.035,
+    displacementMap: woodDiffuse,
+    displacementScale: 0.012,
+    roughness: 0.94, // Mat hout, geen glimmende/spiegelende reflecties
+    metalness: 0.0   // 100% niet-metaal/niet-reflecterend
+  });
+  const floor = new THREE.Mesh(floorGeo, floorMat);
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = 0; // Vloerniveau
+  floor.receiveShadow = true;
+  roomGroup.add(floor);
 
-    const targetWidth = 1.95;
-    const scaleFactor = targetWidth / (size.x || 1);
-    model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+  const wallGeo = new THREE.PlaneGeometry(50, 25);
+  const wallMat = new THREE.MeshStandardMaterial({
+    color: 0x060608,
+    roughness: 0.95
+  });
+  const backWall = new THREE.Mesh(wallGeo, wallMat);
+  backWall.position.set(0, 12, -10);
+  backWall.receiveShadow = true;
+  roomGroup.add(backWall);
 
-    model.position.x = -center.x * scaleFactor;
-    model.position.y = -box.min.y * scaleFactor;
-    model.position.z = -center.z * scaleFactor;
+  const sideWall = new THREE.Mesh(wallGeo, wallMat);
+  sideWall.position.set(-15, 12, 0);
+  sideWall.rotation.y = Math.PI / 2;
+  roomGroup.add(sideWall);
 
-    let tvMesh = null;
-    model.traverse((child) => {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-        tvMesh = child;
-      }
-    });
+  tvGroup = new THREE.Group();
+  tvGroup.position.set(0, 0, 0);
 
-    tvGroup.add(model);
+  const gltfLoader = new THREE.GLTFLoader();
 
-    const tvBox = new THREE.Box3().setFromObject(model);
-    const tvCenter = tvBox.getCenter(new THREE.Vector3());
-    const tvSize = tvBox.getSize(new THREE.Vector3());
-    const tvWidth = tvSize.x;
+  gltfLoader.load(
+    'television_02.glb',
+    function (gltf) {
+      const model = gltf.scene;
 
-    const screenWidth = tvSize.x * 0.784;
-    const screenHeight = (tvSize.y * 0.6) + 0.0;
+      const box = new THREE.Box3().setFromObject(model);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
 
-    const screenGeo = new THREE.PlaneGeometry(screenWidth, screenHeight, 48, 48);
-    const pos = screenGeo.attributes.position;
-    const cornerRadius = 0.15; // Royale afronding passend bij de diepe hoeken van de bezel
+      const targetWidth = 1.95;
+      const scaleFactor = targetWidth / (size.x || 1);
+      model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-    for (let i = 0; i < pos.count; i++) {
-      let px = pos.getX(i);
-      let py = pos.getY(i);
+      model.position.x = -center.x * scaleFactor;
+      model.position.y = -box.min.y * scaleFactor;
+      model.position.z = -center.z * scaleFactor;
 
-      const absX = Math.abs(px);
-      const absY = Math.abs(py);
-      const halfW = screenWidth / 2;
-      const halfH = screenHeight / 2;
-      const cornerDx = absX - (halfW - cornerRadius);
-      const cornerDy = absY - (halfH - cornerRadius);
-
-      if (cornerDx > 0 && cornerDy > 0) {
-        const cornerDist = Math.sqrt(cornerDx * cornerDx + cornerDy * cornerDy);
-        if (cornerDist > cornerRadius) {
-          const factor = cornerRadius / cornerDist;
-          px = Math.sign(px) * ((halfW - cornerRadius) + cornerDx * factor);
-          py = Math.sign(py) * ((halfH - cornerRadius) + cornerDy * factor);
-          pos.setX(i, px);
-          pos.setY(i, py);
+      let tvMesh = null;
+      model.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+          tvMesh = child;
         }
+      });
+
+      tvGroup.add(model);
+
+      const tvBox = new THREE.Box3().setFromObject(model);
+      const tvCenter = tvBox.getCenter(new THREE.Vector3());
+      const tvSize = tvBox.getSize(new THREE.Vector3());
+      const tvWidth = tvSize.x;
+
+      const screenWidth = tvSize.x * 0.784;
+      const screenHeight = (tvSize.y * 0.6) + 0.0;
+
+      const screenGeo = new THREE.PlaneGeometry(screenWidth, screenHeight, 48, 48);
+      const pos = screenGeo.attributes.position;
+      const cornerRadius = 0.15; // Royale afronding passend bij de diepe hoeken van de bezel
+
+      for (let i = 0; i < pos.count; i++) {
+        let px = pos.getX(i);
+        let py = pos.getY(i);
+
+        const absX = Math.abs(px);
+        const absY = Math.abs(py);
+        const halfW = screenWidth / 2;
+        const halfH = screenHeight / 2;
+        const cornerDx = absX - (halfW - cornerRadius);
+        const cornerDy = absY - (halfH - cornerRadius);
+
+        if (cornerDx > 0 && cornerDy > 0) {
+          const cornerDist = Math.sqrt(cornerDx * cornerDx + cornerDy * cornerDy);
+          if (cornerDist > cornerRadius) {
+            const factor = cornerRadius / cornerDist;
+            px = Math.sign(px) * ((halfW - cornerRadius) + cornerDx * factor);
+            py = Math.sign(py) * ((halfH - cornerRadius) + cornerDy * factor);
+            pos.setX(i, px);
+            pos.setY(i, py);
+          }
+        }
+
+        const nx = px / halfW;
+        const ny = py / halfH;
+        const distSq = (nx * nx) + (ny * ny);
+        const pz = Math.max(0, (1 - distSq * 0.45) * 0.052);
+        pos.setZ(i, pz);
+      }
+      screenGeo.computeVertexNormals();
+
+      const screenMaterial = new THREE.MeshBasicMaterial({
+        map: screenTexture,
+        toneMapped: false,
+        side: THREE.DoubleSide
+      });
+
+      crtScreenMesh = new THREE.Mesh(screenGeo, screenMaterial);
+
+      const SCREEN_POS_X = tvCenter.x;
+      const SCREEN_POS_Y = tvBox.min.y + (tvSize.y * 0.6370) + 0.025;
+      const SCREEN_POS_Z = tvBox.max.z - 0.040;
+
+      crtScreenMesh.position.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z);
+      tvGroup.add(crtScreenMesh);
+
+      crtScreenLight.position.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z + 0.1);
+      crtScreenLight.target.position.set(SCREEN_POS_X, SCREEN_POS_Y * 0.4, SCREEN_POS_Z + 3.0);
+      crtFillLight.position.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z + 0.2);
+
+      const MOBILE_BREAKPOINT = 768;
+
+      const MOBILE_ZOOM_DISTANCE = 3.10;   // <-- HIER JOUW MOBIELE STANDAARD AFSTAND AANPASSEN
+      const DESKTOP_ZOOM_DISTANCE = 2.45;  // <-- HIER JOUW DESKTOP STANDAARD AFSTAND AANPASSEN
+
+      const MOBILE_ZOOM_DISTANCE_PLUS = 2.50;  // <-- HIER JOUW MOBIELE EXTRA ZOOM (+) AANPASSEN
+      const DESKTOP_ZOOM_DISTANCE_PLUS = 1.55; // <-- HIER JOUW DESKTOP EXTRA ZOOM (+) AANPASSEN
+
+      function updateCameraBounds() {
+        const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+        const currentVFOV = (camera.fov * Math.PI) / 180;
+        const currentHFOV = 2 * Math.atan(Math.tan(currentVFOV / 2) * camera.aspect);
+
+        const distPercent = isMobile ? 0.32 : 0.11;
+        const dist10 = (tvWidth / distPercent) / (2 * Math.tan(currentHFOV / 2));
+        const elevationAngle = 35 * (Math.PI / 180);
+        const startDist = Math.max(9.0, dist10);
+        const startY = tvCenter.y + (Math.sin(elevationAngle) * startDist);
+        const startZ = tvCenter.z + (Math.cos(elevationAngle) * startDist);
+
+        startCamTarget.set(tvCenter.x, tvCenter.y, tvCenter.z);
+        startCamPos.set(tvCenter.x, startY, startZ);
+
+        const distMinus = isMobile ? MOBILE_ZOOM_DISTANCE : DESKTOP_ZOOM_DISTANCE;
+        const distPlus = isMobile ? MOBILE_ZOOM_DISTANCE_PLUS : DESKTOP_ZOOM_DISTANCE_PLUS;
+        const chosenDistance = THREE.MathUtils.lerp(distMinus, distPlus, extraZoomFactor);
+
+        endCamPos.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z + chosenDistance);
+        endCamTarget.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z);
       }
 
-      const nx = px / halfW;
-      const ny = py / halfH;
-      const distSq = (nx * nx) + (ny * ny);
-      const pz = Math.max(0, (1 - distSq * 0.45) * 0.052);
-      pos.setZ(i, pz);
+      window.updateCameraBounds = updateCameraBounds;
+      updateCameraBounds();
+
+      camera.position.copy(startCamPos);
+      camera.lookAt(startCamTarget);
+    },
+    undefined,
+    function (error) {
+      console.error('Fout bij laden van television_02.glb:', error);
     }
-    screenGeo.computeVertexNormals();
+  );
 
-    const screenMaterial = new THREE.MeshBasicMaterial({
-      map: screenTexture,
-      toneMapped: false,
-      side: THREE.DoubleSide
-    });
+  roomGroup.add(tvGroup);
+  scene.add(roomGroup);
 
-    crtScreenMesh = new THREE.Mesh(screenGeo, screenMaterial);
+  crtScreenLight = new THREE.SpotLight(0xffffff, 2.8, 12.0, Math.PI / 2.5, 0.8, 1.2);
+  crtScreenLight.position.set(0, 0.65, 0.4);
+  crtScreenLight.target.position.set(0, 0.2, 3.5);
+  scene.add(crtScreenLight.target);
+  scene.add(crtScreenLight);
 
-    const SCREEN_POS_X = tvCenter.x;
-    const SCREEN_POS_Y = tvBox.min.y + (tvSize.y * 0.6370) + 0.025;
-    const SCREEN_POS_Z = tvBox.max.z - 0.040;
+  crtFillLight = new THREE.PointLight(0xffffff, 1.2, 5.0, 2.0);
+  crtFillLight.position.set(0, 0.65, 0.5);
+  scene.add(crtFillLight);
 
-    crtScreenMesh.position.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z);
-    tvGroup.add(crtScreenMesh);
+  ambientLight = new THREE.AmbientLight(0x020204, 0.08);
+  scene.add(ambientLight);
 
-    crtScreenLight.position.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z + 0.1);
-    crtScreenLight.target.position.set(SCREEN_POS_X, SCREEN_POS_Y * 0.4, SCREEN_POS_Z + 3.0);
-    crtFillLight.position.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z + 0.2);
+  overheadSpotlight = new THREE.SpotLight(0xc2d8ee, 2.6, 15.0, Math.PI / 5.5, 0.7, 1.2);
+  overheadSpotlight.position.set(0, 5.0, 2.4);
+  overheadSpotlight.target.position.set(0, 0.55, 0.0);
+  scene.add(overheadSpotlight.target);
+  scene.add(overheadSpotlight);
 
-    const MOBILE_BREAKPOINT = 768;
-
-    const MOBILE_ZOOM_DISTANCE = 3.10;   // <-- HIER JOUW MOBIELE STANDAARD AFSTAND AANPASSEN
-    const DESKTOP_ZOOM_DISTANCE = 2.45;  // <-- HIER JOUW DESKTOP STANDAARD AFSTAND AANPASSEN
-
-    const MOBILE_ZOOM_DISTANCE_PLUS = 2.50;  // <-- HIER JOUW MOBIELE EXTRA ZOOM (+) AANPASSEN
-    const DESKTOP_ZOOM_DISTANCE_PLUS = 1.55; // <-- HIER JOUW DESKTOP EXTRA ZOOM (+) AANPASSEN
-
-    function updateCameraBounds() {
-      const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-      const currentVFOV = (camera.fov * Math.PI) / 180;
-      const currentHFOV = 2 * Math.atan(Math.tan(currentVFOV / 2) * camera.aspect);
-
-      const distPercent = isMobile ? 0.32 : 0.11;
-      const dist10 = (tvWidth / distPercent) / (2 * Math.tan(currentHFOV / 2));
-      const elevationAngle = 35 * (Math.PI / 180);
-      const startDist = Math.max(9.0, dist10);
-      const startY = tvCenter.y + (Math.sin(elevationAngle) * startDist);
-      const startZ = tvCenter.z + (Math.cos(elevationAngle) * startDist);
-
-      startCamTarget.set(tvCenter.x, tvCenter.y, tvCenter.z);
-      startCamPos.set(tvCenter.x, startY, startZ);
-
-      const distMinus = isMobile ? MOBILE_ZOOM_DISTANCE : DESKTOP_ZOOM_DISTANCE;
-      const distPlus = isMobile ? MOBILE_ZOOM_DISTANCE_PLUS : DESKTOP_ZOOM_DISTANCE_PLUS;
-      const chosenDistance = THREE.MathUtils.lerp(distMinus, distPlus, extraZoomFactor);
-
-      endCamPos.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z + chosenDistance);
-      endCamTarget.set(SCREEN_POS_X, SCREEN_POS_Y, SCREEN_POS_Z);
-    }
-
-    window.updateCameraBounds = updateCameraBounds;
-    updateCameraBounds();
-
-    camera.position.copy(startCamPos);
-    camera.lookAt(startCamTarget);
-  },
-  undefined,
-  function (error) {
-    console.error('Fout bij laden van television_02.glb:', error);
-  }
-);
-
-roomGroup.add(tvGroup);
-scene.add(roomGroup);
-
-const crtScreenLight = new THREE.SpotLight(0xffffff, 2.8, 12.0, Math.PI / 2.5, 0.8, 1.2);
-crtScreenLight.position.set(0, 0.65, 0.4);
-crtScreenLight.target.position.set(0, 0.2, 3.5);
-scene.add(crtScreenLight.target);
-scene.add(crtScreenLight);
-
-const crtFillLight = new THREE.PointLight(0xffffff, 1.2, 5.0, 2.0);
-crtFillLight.position.set(0, 0.65, 0.5);
-scene.add(crtFillLight);
-
-const ambientLight = new THREE.AmbientLight(0x020204, 0.08);
-scene.add(ambientLight);
-
-const overheadSpotlight = new THREE.SpotLight(0xc2d8ee, 2.6, 15.0, Math.PI / 5.5, 0.7, 1.2);
-overheadSpotlight.position.set(0, 5.0, 2.4);
-overheadSpotlight.target.position.set(0, 0.55, 0.0);
-scene.add(overheadSpotlight.target);
-scene.add(overheadSpotlight);
-
-camera.position.copy(startCamPos);
-camera.lookAt(startCamTarget);
+  camera.position.copy(startCamPos);
+  camera.lookAt(startCamTarget);
+}
 
 const canvasContainer = document.getElementById('canvas-container');
 const roomVignette = document.getElementById('roomVignette');
@@ -1393,33 +1419,35 @@ window.addEventListener('wheel', (e) => {
 }, { passive: false });
 
 let touchStartY = 0;
-window.addEventListener('touchstart', (e) => {
-  if (e.touches.length > 0) {
-    touchStartY = e.touches[0].clientY;
-  }
-}, { passive: true });
-
-window.addEventListener('touchmove', (e) => {
-  const maxScroll = pageMaxScrollOffsets[currentPage] || 0;
-  if (currentProgress > 0.82 && maxScroll > 0 && e.touches.length > 0) {
-    const touchY = e.touches[0].clientY;
-    const deltaY = touchStartY - touchY;
-    const current = pageScrollOffsets[currentPage] || 0;
-
-    if ((deltaY > 0 && current < maxScroll) || (deltaY < 0 && current > 0)) {
-      pageScrollOffsets[currentPage] = Math.max(0, Math.min(maxScroll, current + deltaY * 1.2));
-      touchStartY = touchY;
-      screenTexture.needsUpdate = true;
-      e.preventDefault();
+if (!isMobileDevice) {
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+      touchStartY = e.touches[0].clientY;
     }
-  }
-}, { passive: false });
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    const maxScroll = pageMaxScrollOffsets[currentPage] || 0;
+    if (currentProgress > 0.82 && maxScroll > 0 && e.touches.length > 0) {
+      const touchY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchY;
+      const current = pageScrollOffsets[currentPage] || 0;
+
+      if ((deltaY > 0 && current < maxScroll) || (deltaY < 0 && current > 0)) {
+        pageScrollOffsets[currentPage] = Math.max(0, Math.min(maxScroll, current + deltaY * 1.2));
+        touchStartY = touchY;
+        screenTexture.needsUpdate = true;
+        if (e.cancelable) e.preventDefault();
+      }
+    }
+  }, { passive: false });
+}
 
 const raycaster = new THREE.Raycaster();
 const mouseNDC = new THREE.Vector2();
 
 function getCanvasCoordinatesFromEvent(e) {
-  if (!crtScreenMesh) return null;
+  if (!crtScreenMesh || !camera) return null;
 
   mouseNDC.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouseNDC.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -1568,15 +1596,18 @@ window.addEventListener('click', (e) => {
 });
 
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  if (camera && renderer) {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  }
   if (window.updateCameraBounds) {
     window.updateCameraBounds();
   }
   updateScrollProgress();
 });
+
 
 const clock = new THREE.Clock();
 
@@ -1592,12 +1623,12 @@ function animate() {
   updateViewportGrain();
 
   const crtFlicker = Math.sin(elapsedTime * 25) * 0.12 + (Math.random() * 0.06);
-  crtScreenLight.intensity = 2.2 + crtFlicker;
-  crtFillLight.intensity = 0.9 + (crtFlicker * 0.4);
+  if (crtScreenLight) crtScreenLight.intensity = 2.2 + crtFlicker;
+  if (crtFillLight) crtFillLight.intensity = 0.9 + (crtFlicker * 0.4);
 
   const baseFlicker = Math.sin(elapsedTime * 3.7) * 0.15 + Math.sin(elapsedTime * 8.3) * 0.08;
   const microDrop = (Math.sin(elapsedTime * 17.1) > 0.94) ? (Math.random() * 0.25) : 0;
-  overheadSpotlight.intensity = Math.max(1.2, 2.3 + baseFlicker - microDrop);
+  if (overheadSpotlight) overheadSpotlight.intensity = Math.max(1.2, 2.3 + baseFlicker - microDrop);
 
   if (audio.enabled) {
     audio.setVolume(0.4 + currentProgress * 0.6);
@@ -1619,8 +1650,8 @@ function animate() {
 
   camera.lookAt(lookX, lookY, lookZ);
 
-  canvasContainer.style.opacity = '1';
-  roomVignette.style.opacity = '1';
+  if (canvasContainer) canvasContainer.style.opacity = '1';
+  if (roomVignette) roomVignette.style.opacity = '1';
 
   if (introOverlay) {
     const fadeLimit = 0.25;
@@ -1648,8 +1679,326 @@ function animate() {
     }
   }
 
-  renderer.render(scene, camera);
+  if (renderer && scene && camera) {
+    renderer.render(scene, camera);
+  }
+}
+
+// ===================================================================
+// MOBIELE UI — native HTML layout (geen Three.js / WebGL)
+// ===================================================================
+function initMobileUI() {
+  const ui = document.getElementById('mobile-ui');
+  if (!ui) return;
+
+  // Bouw de HTML op
+  ui.innerHTML = `
+    <!-- Vintage Audio/Video Deck Behuizing (geïnspireerd op cassette/CD speler) -->
+    <div class="mob-deck-case">
+      <!-- Bovenpaneel: subtiele vintage rand met merknaam "(Creative) Webdesign" -->
+      <div class="mob-deck-topbar">
+        <div class="mob-deck-brand">(Creative) Webdesign</div>
+      </div>
+
+      <!-- CRT / Schermvenster -->
+      <div class="mob-phone-screen">
+        <div class="mob-crt-overlay">
+          <div class="mob-scanlines"></div>
+          <div class="mob-crt-curvature"></div>
+        </div>
+        <canvas id="mob-static-canvas"></canvas>
+        <nav class="mob-tabs">
+          <button class="mob-tab active" data-page="home">
+            <span class="mob-tab-box" style="background:#00ba50"></span>
+            <span class="mob-tab-label">home</span>
+          </button>
+          <button class="mob-tab" data-page="tarieven">
+            <span class="mob-tab-box" style="background:#0047bb"></span>
+            <span class="mob-tab-label">tarieven</span>
+          </button>
+          <button class="mob-tab" data-page="info">
+            <span class="mob-tab-box" style="background:#f740a5"></span>
+            <span class="mob-tab-label">info</span>
+          </button>
+        </nav>
+
+        <div class="mob-content">
+
+          <!-- HOME pagina -->
+          <div class="mob-page active" id="mob-home">
+            <div class="mob-home-header">
+              <img src="LUCSWEB_transparent.png" alt="LUCSWEB" class="mob-home-logo">
+            </div>
+            <p class="mob-p">
+              LUCSWEB levert complete, simpele of juist unieke websites.
+              Ben jij een zzp'er of wil je <span class="mob-hl-pink">projecten/werk</span> snel en simpel laten zien?<br>
+              Ik ontwerp, bouw en host je website voor een zeer scherpe prijs.
+              Bedrijven leveren websites van deze kwaliteit voor een prijs tussen de
+              <span class="mob-hl-red">€500-€2000 met €100+ maandelijkse kosten.</span>
+            </p>
+            <p class="mob-p">
+              Bij mij kan je al beginnen vanaf <span class="mob-hl-green">€14.99</span> per maand.
+            </p>
+            <p class="mob-p">
+              Bekijk de tarieven en stuur snel een aanvraag, ik neem binnen 2 dagen contact met je op via Whatsapp of e-mail!
+            </p>
+
+            <div class="mob-section-title">Mijn werk</div>
+            <div class="mob-grid">
+              ${VOORBEELD_WEBSITES.map(site => `
+                <a class="mob-card" href="${site.link || '#'}" target="_blank" rel="noopener">
+                  <img src="${site.afbeelding || ''}" alt="${site.titel}" loading="lazy">
+                  <div class="mob-card-title">${site.titel}</div>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- TARIEVEN pagina -->
+          <div class="mob-page" id="mob-tarieven">
+            <p class="mob-p">
+              <span class="mob-hl-blue">TARIEVEN</span>
+            </p>
+            <p class="mob-p">
+              Samenwerken gaat heel makkelijk. Jij bedenkt voor jezelf hoe je je website wil hebben.
+              Hierna kies je een pakket voor het hosten van je website,
+              <span class="mob-hl-green">je betaalt hier helemaal niks.</span>
+              Je hoeft verder nog alleen je naam, email en telefoonnummer door te geven.
+            </p>
+
+            <div class="mob-pakket">
+              <div class="mob-pakket-naam">Flexibel pakket</div>
+              <div class="mob-pakket-prijs">€19.99 <span>/ maand</span></div>
+              <div class="mob-pakket-detail">
+                Maandelijks opzegbaar.<br>
+                Eenmalige startkosten: €99.99.
+              </div>
+            </div>
+
+            <div class="mob-pakket">
+              <div class="mob-pakket-naam">Consistent pakket</div>
+              <div class="mob-pakket-prijs">€14.99 <span>/ maand</span></div>
+              <div class="mob-pakket-detail">
+                Eenmalige startkosten: €99.99.<br>
+                Eerste jaar vast tarief (niet maandelijks opzegbaar).<br>
+                Na eerste jaar maandelijks opzegbaar voor €14.99 per maand.
+              </div>
+            </div>
+
+            <div class="mob-form-title">Vrijblijvende aanvraag indienen</div>
+            <p class="mob-form-sub">
+              Vul je gegevens in en ik neem binnen 2 werkdagen contact met je op via Whatsapp of e-mail.
+            </p>
+
+            <div id="mob-form-wrapper">
+              <label class="mob-field-label" for="mob-naam">NAAM</label>
+              <input class="mob-input" id="mob-naam" type="text" placeholder="Jouw naam" autocomplete="name">
+
+              <label class="mob-field-label" for="mob-email">E-MAIL</label>
+              <input class="mob-input" id="mob-email" type="email" placeholder="jouw@email.nl" autocomplete="email">
+
+              <label class="mob-field-label" for="mob-tel">TELEFOONNUMMER</label>
+              <input class="mob-input" id="mob-tel" type="tel" placeholder="+31 6 00000000" autocomplete="tel">
+
+              <label class="mob-field-label">PAKKET</label>
+              <div class="mob-pkg-row">
+                <button class="mob-pkg-btn selected" id="mob-pkg-flex">Flexibel pakket</button>
+                <button class="mob-pkg-btn" id="mob-pkg-const">Consistent pakket</button>
+              </div>
+
+              <button class="mob-submit-btn" id="mob-submit">AANVRAAG INDIENEN</button>
+              <div class="mob-error" id="mob-error" style="display:none"></div>
+            </div>
+            <div class="mob-success" id="mob-success" style="display:none">
+              ✓ Aanvraag ontvangen! Ik neem binnen 2 werkdagen contact met je op.
+            </div>
+          </div>
+
+          <!-- INFO pagina -->
+          <div class="mob-page" id="mob-info">
+            <div class="mob-profile-row">
+              <img src="profiel.jpg" alt="Lucas – Lucsweb" class="mob-profile-img">
+              <div class="mob-info-meta">
+                ${INFO_DATA.gegevens.map(g => `<div><strong>${g.label}</strong> ${g.waarde}</div>`).join('')}
+              </div>
+            </div>
+            ${INFO_DATA.secties.map(s => `
+              <div class="mob-sectie-kop">${s.kop}</div>
+              <div class="mob-sectie-tekst">${s.tekst}</div>
+            `).join('')}
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Onderkant: 3 gelijke rechthoekige tape-deck toetsen -->
+      <div class="mob-deck-control-panel">
+        <div class="mob-deck-buttons-trough">
+          <button class="mob-deck-btn" id="mob-btn-prev" aria-label="Vorige">
+            <svg class="mob-deck-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="17,5 7,12 17,19" fill="#241e17" stroke="#17130e" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="mob-deck-btn mob-deck-center-badge" aria-label="Logo">
+            <img src="LUCSWEB_transparent.png" alt="LUCSWEB" class="mob-deck-btn-logo">
+          </div>
+          <button class="mob-deck-btn" id="mob-btn-next" aria-label="Volgende">
+            <svg class="mob-deck-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="7,5 17,12 7,19" fill="#241e17" stroke="#17130e" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Static / Grain canvas setup voor mobiel tab wisselen
+  const staticCanvas = ui.querySelector('#mob-static-canvas');
+  let staticCtx = null;
+  let staticAnimId = null;
+  if (staticCanvas) {
+    staticCanvas.width = 160;
+    staticCanvas.height = 120;
+    staticCtx = staticCanvas.getContext('2d');
+  }
+
+  function triggerMobileStaticTransition() {
+    if (!staticCanvas || !staticCtx) return;
+    playChannelSwitchStatic();
+
+    if (staticAnimId) cancelAnimationFrame(staticAnimId);
+    staticCanvas.classList.add('active');
+
+    const startTime = performance.now();
+    const duration = 240; // ms
+
+    function renderStaticNoise(now) {
+      const elapsed = now - startTime;
+      if (elapsed >= duration) {
+        staticCanvas.classList.remove('active');
+        staticCtx.clearRect(0, 0, staticCanvas.width, staticCanvas.height);
+        return;
+      }
+
+      const imgData = staticCtx.createImageData(staticCanvas.width, staticCanvas.height);
+      const data = imgData.data;
+      const len = data.length;
+      for (let i = 0; i < len; i += 4) {
+        const val = (Math.random() * 255) | 0;
+        data[i] = val;
+        data[i + 1] = val;
+        data[i + 2] = val;
+        data[i + 3] = (Math.random() * 190 + 50) | 0;
+      }
+      staticCtx.putImageData(imgData, 0, 0);
+
+      staticAnimId = requestAnimationFrame(renderStaticNoise);
+    }
+
+    staticAnimId = requestAnimationFrame(renderStaticNoise);
+  }
+
+  // Tab-switching functie
+  const tabOrder = ['home', 'tarieven', 'info'];
+  const tabs = ui.querySelectorAll('.mob-tab');
+  const pages = ui.querySelectorAll('.mob-page');
+
+  function switchToPage(target) {
+    const currentActive = ui.querySelector('.mob-tab.active');
+    if (currentActive && currentActive.dataset.page === target) return;
+
+    triggerMobileStaticTransition();
+
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.page === target));
+    pages.forEach(p => p.classList.toggle('active', p.id === 'mob-' + target));
+
+    // Scroll display weer soepel naar boven bij veranderen van pagina
+    const content = ui.querySelector('.mob-content');
+    if (content) content.scrollTop = 0;
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      switchToPage(tab.dataset.page);
+    });
+  });
+
+  // Fysieke retro deck bedieningsknoppen (◀ Vorige en ▶ Volgende)
+  const btnPrev = ui.querySelector('#mob-btn-prev');
+  const btnNext = ui.querySelector('#mob-btn-next');
+
+  if (btnPrev) {
+    btnPrev.addEventListener('click', () => {
+      const currentActive = ui.querySelector('.mob-tab.active');
+      const currentId = currentActive ? currentActive.dataset.page : 'home';
+      const currentIndex = tabOrder.indexOf(currentId);
+      const prevIndex = (currentIndex - 1 + tabOrder.length) % tabOrder.length;
+      switchToPage(tabOrder[prevIndex]);
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      const currentActive = ui.querySelector('.mob-tab.active');
+      const currentId = currentActive ? currentActive.dataset.page : 'home';
+      const currentIndex = tabOrder.indexOf(currentId);
+      const nextIndex = (currentIndex + 1) % tabOrder.length;
+      switchToPage(tabOrder[nextIndex]);
+    });
+  }
+
+  // Pakket-selector
+  const pkgFlex = ui.querySelector('#mob-pkg-flex');
+  const pkgConst = ui.querySelector('#mob-pkg-const');
+  pkgFlex.addEventListener('click', () => {
+    FORM_DATA.package = 'Flexibel pakket';
+    pkgFlex.classList.add('selected');
+    pkgConst.classList.remove('selected');
+  });
+  pkgConst.addEventListener('click', () => {
+    FORM_DATA.package = 'Consistent pakket';
+    pkgConst.classList.add('selected');
+    pkgFlex.classList.remove('selected');
+  });
+
+  // Formulier submit
+  const submitBtn = ui.querySelector('#mob-submit');
+  const errorDiv = ui.querySelector('#mob-error');
+  const successDiv = ui.querySelector('#mob-success');
+  const formWrapper = ui.querySelector('#mob-form-wrapper');
+  const naamInput = ui.querySelector('#mob-naam');
+  const emailInput = ui.querySelector('#mob-email');
+  const telInput = ui.querySelector('#mob-tel');
+
+  submitBtn.addEventListener('click', () => {
+    FORM_DATA.name = naamInput.value.trim();
+    FORM_DATA.email = emailInput.value.trim();
+    FORM_DATA.phone = telInput.value.trim();
+
+    submitBtn.textContent = 'VERZENDEN...';
+    submitBtn.disabled = true;
+    errorDiv.style.display = 'none';
+
+    submitFormspree(
+      () => {
+        // succes
+        formWrapper.style.display = 'none';
+        successDiv.style.display = 'block';
+      },
+      (msg) => {
+        // fout
+        submitBtn.textContent = 'AANVRAAG INDIENEN';
+        submitBtn.disabled = false;
+        errorDiv.textContent = msg;
+        errorDiv.style.display = 'block';
+      }
+    );
+  });
 }
 
 updateScrollProgress();
-animate();
+if (isMobileDevice) {
+  initMobileUI();
+} else {
+  animate();
+}

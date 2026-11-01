@@ -55,7 +55,19 @@ body {
   font-family: var(--body-font);
   overflow-x: hidden;
   scroll-behavior: auto;
-  /* Smoothed by JS */
+}
+
+/* Toegankelijke SEO container voor crawlers (Google, Bing) zonder visuele impact op de 3D weergave */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* 3D WebGL Canvas Layer - Fixed met subtiele fisheye lens kromming */
@@ -257,3 +269,579 @@ body {
   width: 100%;
   pointer-events: none;
 }
+
+/* ===================================================
+   MOBIELE WEERGAVE (GEEN 3D — NATIVE HTML LAYOUT)
+   =================================================== */
+
+/* Desktop: verberg mobile UI */
+#mobile-ui { display: none; }
+
+@media (max-width: 768px) {
+  html, body {
+    overflow: hidden !important;
+    height: 100%;
+    background: #0b0906;
+  }
+
+  /* Verberg alle 3D elementen */
+  #canvas-container, #roomVignette, #grainCanvas,
+  .viewport-fisheye-lens, #intro-overlay,
+  #zoom-controls, #scroll-track, .zoom-spacer {
+    display: none !important;
+  }
+
+  /* Mobile UI: Vintage Stereo / Cassette Deck look met matte beige/champagne textuur */
+  #mobile-ui {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #11100e;
+    z-index: 200;
+    font-family: 'Space Mono', 'Fira Code', monospace;
+    overflow: hidden;
+    padding: 6px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Het metalen/kunststof vintage chassis (beige / zacht champagne grijs zoals Braun/Technics) */
+  .mob-deck-case {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-width: 480px;
+    background: #d6cfc2;
+    background-image:
+      linear-gradient(180deg, #dfd8cb 0%, #d4ccbf 45%, #c8c0b2 100%);
+    border-radius: 12px;
+    border: 2px solid #b8b0a2;
+    box-shadow:
+      inset 0 1px 2px rgba(255, 255, 255, 0.7),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.35),
+      0 12px 36px rgba(0, 0, 0, 0.85);
+    position: relative;
+    overflow: hidden;
+    padding: 8px 10px 10px 10px;
+    box-sizing: border-box;
+  }
+
+  /* Bovenste paneelrand met merknaam "LUCSWEB" */
+  .mob-deck-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 4px 6px 4px;
+    flex-shrink: 0;
+  }
+
+  .mob-deck-brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: #433d35;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  /* Telefoonscherm bezel / display venster */
+  .mob-phone-screen {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 3px solid #3a352d;
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.5),
+      0 1px 2px rgba(255, 255, 255, 0.7);
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* Bolling (Fisheye lens effect) & analoge CRT scanlines overlay */
+  .mob-crt-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 60;
+    overflow: hidden;
+  }
+
+  /* Subtiele CRT glasrand schaduw */
+  .mob-crt-curvature {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow:
+      inset 0 0 16px rgba(0, 0, 0, 0.22),
+      inset 0 0 45px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Horizontale streepruis (oude TV scanlines) met subtiele roll/animatie */
+  .mob-scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.08) 0px,
+      rgba(0, 0, 0, 0.08) 1.5px,
+      transparent 1.5px,
+      transparent 3.5px
+    );
+    opacity: 0.9;
+    animation: mobScanlineJitter 8s linear infinite;
+  }
+
+  /* Langzaam bewegende analoge refresh roll balk voor authentieke CRT look */
+  .mob-scanlines::after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.03) 48%,
+      rgba(0, 0, 0, 0.10) 50%,
+      rgba(0, 0, 0, 0.03) 52%,
+      transparent 100%
+    );
+    animation: mobScanlineBar 4s linear infinite;
+  }
+
+  @keyframes mobScanlineJitter {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(14px); }
+  }
+
+  @keyframes mobScanlineBar {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+
+  /* Onderkant: 3 gelijke vintage toetsen zonder tekst erboven of eronder */
+  .mob-deck-control-panel {
+    flex-shrink: 0;
+    padding: 8px 4px 4px 4px;
+  }
+
+  /* De diepe metalen uitsparing / sleuf waarin de knoppen verzonken liggen */
+  .mob-deck-buttons-trough {
+    display: flex;
+    gap: 4px;
+    background: #14120f;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #3c3730;
+    box-shadow:
+      inset 0 3px 6px rgba(0, 0, 0, 0.95),
+      0 1px 1px rgba(255, 255, 255, 0.6);
+  }
+
+  /* De 3 exact even grote rechthoekige fysieke knoppen */
+  .mob-deck-btn {
+    flex: 1 1 0;
+    width: 0; /* Zorgt dat alle 3 100% exact even breed zijn */
+    height: 44px;
+    background: linear-gradient(180deg, #e5ded2 0%, #cfc7ba 50%, #beb6a8 100%);
+    border: 1px solid #756d61;
+    border-top-color: #f7f3eb;
+    border-bottom-color: #554f46;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow:
+      0 3px 1px rgba(0, 0, 0, 0.45),
+      inset 0 1px 1px rgba(255, 255, 255, 0.8),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.15);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.06s ease, box-shadow 0.06s ease, background 0.06s ease;
+    outline: none;
+    box-sizing: border-box;
+    padding: 0 4px;
+  }
+
+  .mob-deck-btn:active {
+    transform: translateY(2.5px);
+    background: linear-gradient(180deg, #beb6a8 0%, #cfc7ba 60%, #ded7cb 100%);
+    box-shadow:
+      0 0 1px rgba(0, 0, 0, 0.3),
+      inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    border-top-color: #554f46;
+  }
+
+  /* Middelste knop: niet klikbaar, geen hover of active indruk-effect */
+  .mob-deck-center-badge {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .mob-deck-center-badge:active {
+    transform: none !important;
+    background: linear-gradient(180deg, #e5ded2 0%, #cfc7ba 50%, #beb6a8 100%) !important;
+    box-shadow:
+      0 3px 1px rgba(0, 0, 0, 0.45),
+      inset 0 1px 1px rgba(255, 255, 255, 0.8),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.15) !important;
+    border-top-color: #f7f3eb !important;
+  }
+
+  /* Het logo in de middelste knop: donkerbruin/zwart getint met transparante achtergrond */
+  .mob-deck-btn-logo {
+    max-height: 22px;
+    max-width: 85%;
+    width: auto;
+    object-fit: contain;
+    background: transparent;
+    filter: brightness(0.18) sepia(0.6) saturate(3) hue-rotate(345deg);
+    opacity: 0.88;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Eenvoudig donkerbruin/zwart gegraveerd vector driehoek-icoon (◀ en ▶) */
+  .mob-deck-arrow {
+    width: 17px;
+    height: 17px;
+    display: block;
+    user-select: none;
+    pointer-events: none;
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.5));
+  }
+
+  /* Navigatie tabs balk */
+  .mob-tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #f4f4f4;
+    border-bottom: 2px solid #000;
+    padding: 10px 14px;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .mob-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border: none;
+    background: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+    letter-spacing: 0.05em;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+  .mob-tab .mob-tab-box {
+    width: 14px; height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .mob-tab.active { border-color: transparent; }
+  .mob-tab.active .mob-tab-label {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+  }
+
+  .mob-logo {
+    display: none;
+  }
+
+  .mob-home-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 6px;
+  }
+
+  .mob-home-logo {
+    width: clamp(140px, 50vw, 210px);
+    height: auto;
+    display: inline-block;
+    background: transparent;
+  }
+
+  /* Ruis / Grain / Static transitie effect bij wisselen van tab */
+  #mob-static-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    mix-blend-mode: multiply;
+  }
+
+  #mob-static-canvas.active {
+    opacity: 0.65;
+  }
+
+  /* Scrollbaar inhoudsgebied met echte 3D CRT bolling in de tekst en elementen */
+  .mob-content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 18px 20px 48px;
+    perspective: 520px;
+    perspective-origin: center 38%;
+  }
+
+  .mob-page {
+    display: none;
+    transform: rotateX(2.5deg) scale(0.99);
+    transform-origin: center center;
+    transform-style: preserve-3d;
+  }
+  .mob-page.active { display: block; }
+
+  /* 3D Bolling op alinea's en tekstblokken */
+  .mob-p {
+    font-family: 'Space Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #222;
+    margin-bottom: 14px;
+    transform: perspective(400px) rotateX(1deg) scaleY(1.02);
+    letter-spacing: 0.02em;
+    text-shadow: 0.3px 0 0.4px rgba(0, 0, 0, 0.15);
+  }
+
+  .mob-h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #000;
+  }
+  .mob-hl-red   { background: #ff4d4d; color: #000; padding: 1px 4px; }
+  .mob-hl-green { background: #00ba50; color: #000; padding: 1px 4px; }
+  .mob-hl-pink  { color: #f740a5; }
+  .mob-hl-blue  { color: #0047bb; font-weight: 700; }
+
+  /* Portfolio grid */
+  .mob-section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 20px 0 10px;
+    color: #000;
+  }
+  .mob-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .mob-card {
+    display: block;
+    border: 2px solid #000;
+    text-decoration: none;
+    color: #000;
+    overflow: hidden;
+  }
+  .mob-card img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    display: block;
+    background: #f0f0f0;
+  }
+  .mob-card-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 6px;
+    background: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Prijspakketten */
+  .mob-pakket {
+    border: 2px solid #000;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .mob-pakket-naam {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 6px;
+  }
+  .mob-pakket-prijs {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+  }
+  .mob-pakket-prijs span {
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .mob-pakket-detail {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #444;
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+
+  /* Aanvraagformulier */
+  .mob-form-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+    margin: 20px 0 8px;
+    border-top: 2px solid #000;
+    padding-top: 16px;
+  }
+  .mob-form-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .mob-field-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #000;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.08em;
+  }
+  .mob-input {
+    width: 100%;
+    border: 1.5px solid #888;
+    padding: 10px 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: #000;
+    background: #fff;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    outline: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  .mob-input:focus { border-color: #000; }
+  .mob-pkg-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .mob-pkg-btn {
+    border: 1.5px solid #000;
+    padding: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #fff;
+    color: #000;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mob-pkg-btn.selected { background: #000; color: #fff; }
+  .mob-submit-btn {
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mob-submit-btn:active { opacity: 0.8; }
+  .mob-success {
+    background: #00ba50;
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 14px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .mob-error {
+    color: #ff3b30;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  /* Info pagina */
+  .mob-profile-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+  .mob-profile-img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #000;
+    flex-shrink: 0;
+  }
+  .mob-info-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #222;
+  }
+  .mob-info-meta strong { color: #000; }
+  .mob-sectie-kop {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin: 16px 0 6px;
+  }
+  .mob-sectie-tekst {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+}
+
