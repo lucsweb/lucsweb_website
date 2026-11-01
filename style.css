@@ -296,13 +296,15 @@ body {
     display: flex !important;
     flex-direction: column;
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height: houdt rekening met browser balken op mobiel */
     background: #11100e;
     z-index: 200;
     font-family: 'Space Mono', 'Fira Code', monospace;
     overflow: hidden;
-    padding: 6px;
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)) 6px;
     box-sizing: border-box;
     align-items: center;
     justify-content: center;
@@ -326,8 +328,9 @@ body {
       0 12px 36px rgba(0, 0, 0, 0.85);
     position: relative;
     overflow: hidden;
-    padding: 8px 10px 10px 10px;
+    padding: 6px 8px 8px 8px;
     box-sizing: border-box;
+    min-height: 0;
   }
 
   /* Bovenste paneelrand met merknaam "LUCSWEB" */
@@ -438,7 +441,7 @@ body {
   /* Onderkant: 3 gelijke vintage toetsen zonder tekst erboven of eronder */
   .mob-deck-control-panel {
     flex-shrink: 0;
-    padding: 8px 4px 4px 4px;
+    padding: 6px 2px 2px 2px;
   }
 
   /* De diepe metalen uitsparing / sleuf waarin de knoppen verzonken liggen */
@@ -446,7 +449,7 @@ body {
     display: flex;
     gap: 4px;
     background: #14120f;
-    padding: 4px;
+    padding: 3px;
     border-radius: 4px;
     border: 1px solid #3c3730;
     box-shadow:
@@ -458,7 +461,7 @@ body {
   .mob-deck-btn {
     flex: 1 1 0;
     width: 0; /* Zorgt dat alle 3 100% exact even breed zijn */
-    height: 44px;
+    height: clamp(36px, 5.2vh, 44px);
     background: linear-gradient(180deg, #e5ded2 0%, #cfc7ba 50%, #beb6a8 100%);
     border: 1px solid #756d61;
     border-top-color: #f7f3eb;
