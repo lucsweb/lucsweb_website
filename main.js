@@ -304,9 +304,10 @@ const PAGE_DATA = {
       },
       {
         segments: [
-          { text: "Samenwerken gaat heel makkelijk. Jij bedenkt voor jezelf hoe je je website wil hebben: simpel, druk, 3D, noem het maar op. Hierna kies je een pakket voor het hosten van je website, " },
-          { text: "je betaalt hier helemaal niks.", color: "#000000", bg: "#00ba50" },
-          { text: " Je hoeft verder nog alleen je naam, email en telefoonnummer door te geven en ik neem binnen 2 werkdagen contact met je op via Whatsapp of e-mail." }
+          { text: "Samenwerken gaat heel makkelijk. Jij bedenkt hoe je je website wil hebben en kiest een passend pakket. Daarna vul je " },
+          { text: "het formulier hier beneden", color: "#000000", bg: "#00ba50" },
+          { text: " in en neem ik binnen een paar dagen contact met je op. We bespreken je wensen, gekozen pakket en hoe ik te werk ga met jouw persoonlijke website. " },
+          { text: "Heb je geen idee hoe je website eruit moet zien? Geen probleem, ik help je graag!", color: "#000000", bg: "#00ba50" }
         ]
       }
     ]
@@ -1755,10 +1756,7 @@ function initMobileUI() {
               <span class="mob-hl-blue">TARIEVEN</span>
             </p>
             <p class="mob-p">
-              Samenwerken gaat heel makkelijk. Jij bedenkt voor jezelf hoe je je website wil hebben.
-              Hierna kies je een pakket voor het hosten van je website,
-              <span class="mob-hl-green">je betaalt hier helemaal niks.</span>
-              Je hoeft verder nog alleen je naam, email en telefoonnummer door te geven.
+              Samenwerken gaat heel makkelijk. Jij bedenkt hoe je je website wil hebben en kiest een passend pakket. Daarna vul je <span class="mob-hl-green">het formulier hier beneden</span> in en neem ik binnen een paar dagen contact met je op. We bespreken je wensen, gekozen pakket en hoe ik te werk ga met jouw persoonlijke website. <span class="mob-hl-green">Heb je geen idee hoe je website eruit moet zien? Geen probleem, ik help je graag!</span>
             </p>
 
             <div class="mob-pakket">
